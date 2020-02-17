@@ -57,7 +57,7 @@ const search_wal = async (keywords) => {
     return data;
 }
 
-document.querySelector('#go').onclick = async () => {
+const get_products = async () => {
     console.log(document.getElementById("search-terms").value);
     sortby = document.getElementById("sortby").value;
     console.log(sortby);
@@ -67,3 +67,16 @@ document.querySelector('#go').onclick = async () => {
     console.log(JSON.stringify(data));
     document.getElementById("place").innerHTML += JSON.stringify(data);
 };
+
+const search_on_enter = async (event) => {
+    if (event.which == 13 || event.keyCode == 13) {
+        //code to execute here
+        console.log("enter pressed");
+        await get_products();
+        return false;
+    }
+    return true;
+}
+
+document.querySelector('#go').onclick = get_products;
+document.querySelector('#search-terms').onkeypress = search_on_enter;
