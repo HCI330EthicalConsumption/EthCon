@@ -1,3 +1,5 @@
+import DatePicker from 'antd/es/date-picker'
+
 const get = async (url) => {
     console.log(url);
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
