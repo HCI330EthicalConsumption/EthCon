@@ -1,4 +1,3 @@
-// let fetch = require('node-fetch');
 const get = async (url) => {
     console.log(url);
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -30,11 +29,12 @@ const search_gg = async (keywords, sortby, pagenum) => {
     //console.log(resp);
     let data = await resp.json();
     console.log(data);
-    load_results(data.products);
-    //return data.products;
+    // load_results(data.products);
+    return data.products;
 }
 //Not useable yet
 const search_wal = async (keywords) => {
+    // const url = "https://www.walmart.com/search/?query=" + keywords;
     const url = "https://www.walmart.com/search/?query=" + keywords;
     const resp = await get(url);
     console.log(resp);
@@ -65,24 +65,26 @@ const get_products = async () => {
     search_terms = document.getElementById("search-terms").value
     data = await search_gg(search_terms, sortby, 1);
     // data = await search_wal(search_terms);
-    console.log(JSON.stringify(data));
-    document.getElementById("place").innerHTML += JSON.stringify(data);
+    // load_results(data);
+    return data;
 };
 
-const search_on_enter = async (event) => {
+// Used as keypress event listener, determines whether the enter key was pressed in event
+//  returns true if enter was pressed, else false.
+const search_on_enter = (event) => {
     if (event.which == 13 || event.keyCode == 13) {
-        //code to execute here
         console.log("enter pressed");
-        await get_products();
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 
+// Given an array of product json objects, loads the products into the #product HTML element.
+//  Each product json object should include: id, image, name, brand.name, and rating
 const load_results = (products) => {
     document.querySelector('#products').innerHTML = '';
-    for(product of products){
-      const template = `<section class="product-card" id="${product.id}">
+    for (product of products) {
+        const template = `<section class="product-card" id="${product.id}">
           <div class="left">
               <img src="${product.image}">
           </div>
@@ -92,9 +94,22 @@ const load_results = (products) => {
               <h4>Rating: ${product.rating}</h4>
           </div>
       </section>`
-      document.querySelector('#products').innerHTML += template;
-    }
+        document.querySelector('#products').innerHTML += template;
+    };
 };
 
-document.querySelector('#go').onclick = get_products;
-document.querySelector('#search-terms').onkeypress = search_on_enter;
+document.querySelector('#go').onclick = () => {
+    get_products()
+        .then((products) => {
+            load_results(products);
+        });
+};
+document.querySelector('#search-terms').onkeypress = (event) => {
+    enter_pressed = search_on_enter(event); //determine if enter was the key pressed
+    if (enter_pressed) { // if so, get products and load them
+        get_products()
+            .then((products) => {
+                load_results(products);
+            });
+    };
+};
