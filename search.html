@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -6,12 +7,19 @@
 </head>
 
 <body>
-  <input id="search-terms" type="text" placeholder="Enter a search term">
-  <select name="sortby" id="sortby">
-    <option value="relevance">Relevance</option>
-    <option value="rating">Rating</option>
-  </select>
-  <button id="go">GO</button>
+  <div class="wrap">
+    <div class = "search"></div>
+      <input id ="search-terms" class="search-terms" type="text" placeholder="Enter a search term">
+      <button type="submit" class="go" id="go">
+        <!-- <Icon type="search" theme="filled"/> -->
+        <i class="fas fa-search"></i>
+      </button>
+      <select name="sortby" id="sortby" class="select-css">
+        <option value="relevance">Relevance</option>
+        <option value="rating">Rating</option>
+    </select>
+    </div>
+  </div>
   <section id="product-section">
          <h1>Results</h1>
          <section id="products">
@@ -22,6 +30,7 @@
     data
   </p>
   <script type="text/javascript" src="js/db.js"></script>
+  <script src="https://kit.fontawesome.com/62a7c74d0d.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
