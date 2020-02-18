@@ -7,19 +7,27 @@
 </head>
 
 <body>
-  <div class="wrap">
-    <div class = "search"></div>
-      <input id ="search-terms" class="search-terms" type="text" placeholder="Enter a search term">
-      <button type="submit" class="go" id="go">
-        <!-- <Icon type="search" theme="filled"/> -->
-        <i class="fas fa-search"></i>
-      </button>
-      <select name="sortby" id="sortby" class="select-css">
-        <option value="relevance">Relevance</option>
-        <option value="rating">Rating</option>
-    </select>
+  <header id="header" class="header">
+    <div id="name_div">
+      <h1 id="name">Buy Better</h1>
     </div>
-  </div>
+    <div class="wrap">
+      <div class = "search"></div>
+        <input id ="search-terms" class="search-terms" type="text" placeholder="Enter a search term">
+        <button type="submit" class="go" id="go">
+          <!-- <Icon type="search" theme="filled"/> -->
+          <i class="fas fa-search"></i>
+        </button>
+        <select name="sortby" id="sortby" class="select-css">
+          <option value="relevance">Relevance</option>
+          <option value="rating">Rating</option>
+      </select>
+      </div>
+    </div>
+  </header>
+
+
+  
   <section id="product-section">
          <h1>Results</h1>
          <section id="products">
