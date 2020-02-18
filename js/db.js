@@ -27,10 +27,11 @@ const search_gg = async (keywords, sortby, pagenum) => {
     const url = "https://www.goodguide.com/catalog/search.json?filter=" + keywords + "&sort=" + sort_term + "&page=" + pagenum;
 
     const resp = await get(url);
-    console.log(resp);
+    //console.log(resp);
     let data = await resp.json();
     console.log(data);
-    return data.products;
+    load_results(data.products);
+    //return data.products;
 }
 //Not useable yet
 const search_wal = async (keywords) => {
@@ -77,6 +78,23 @@ const search_on_enter = async (event) => {
     }
     return true;
 }
+
+const load_results = (products) => {
+    document.querySelector('#products').innerHTML = '';
+    for(product of products){
+      const template = `<section class="product-card" id="${product.id}">
+          <div class="left">
+              <img src="${product.image}">
+          </div>
+          <div class ="right">
+              <h4>${product.name}</h4>
+              <h4>Brand: ${product.brand.name}</h4>
+              <h4>Rating: ${product.rating}</h4>
+          </div>
+      </section>`
+      document.querySelector('#products').innerHTML += template;
+    }
+};
 
 document.querySelector('#go').onclick = get_products;
 document.querySelector('#search-terms').onkeypress = search_on_enter;
