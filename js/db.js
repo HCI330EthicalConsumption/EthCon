@@ -74,6 +74,8 @@ const get_products = async () => {
 // Used as keypress event listener, determines whether the enter key was pressed in event
 //  returns true if enter was pressed, else false.
 const search_on_enter = (event) => {
+    // var r = document.getElementById("results")
+    // r.style.visibility = "visible";
     if (event.which == 13 || event.keyCode == 13) {
         console.log("enter pressed");
         return true;
@@ -107,6 +109,8 @@ document.querySelector('#go').onclick = () => {
         .then((products) => {
             load_results(products);
         });
+    var r = document.getElementById("results")
+    r.style.visibility = "visible";
 };
 document.querySelector('#search-terms').onkeypress = (event) => {
     enter_pressed = search_on_enter(event); //determine if enter was the key pressed
@@ -115,5 +119,7 @@ document.querySelector('#search-terms').onkeypress = (event) => {
             .then((products) => {
                 load_results(products);
             });
+        var r = document.getElementById("results")
+        r.style.visibility = "visible";
     };
 };
