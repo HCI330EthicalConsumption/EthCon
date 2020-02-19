@@ -135,7 +135,6 @@ document.querySelector('#go').onclick = async () => {
         .then((products) => {
             load_results(products);
         });
-<<<<<<< HEAD
     get("amazon.com/s?k=yogurt").then((result) => {
         result.text().then((data) => {
             console.log(data);
@@ -158,10 +157,8 @@ document.querySelector('#go').onclick = async () => {
         });
     })
     // console.log(htmlObj.querySelectorAll("div[data-index]")[0].innerHTML);
-=======
     var r = document.getElementById("results")
     r.style.visibility = "visible";
->>>>>>> master
 };
 
 const get_company_amazon = async (url) => {
