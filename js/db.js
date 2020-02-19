@@ -100,6 +100,8 @@ const get_products = async () => {
 // Used as keypress event listener, determines whether the enter key was pressed in event
 //  returns true if enter was pressed, else false.
 const search_on_enter = (event) => {
+    // var r = document.getElementById("results")
+    // r.style.visibility = "visible";
     if (event.which == 13 || event.keyCode == 13) {
         console.log("enter pressed");
         return true;
@@ -117,9 +119,11 @@ const load_results = (products) => {
               <img src="${product.image}">
           </div>
           <div class ="right">
-              <h4>${product.name}</h4>
-              <h4>Brand: ${product.brand.name}</h4>
-              <h4>Rating: ${product.rating}</h4>
+              <h1 id="prod_name">${product.name}</h1>
+              <p>${product.brand.name}</p>
+          </div>
+          <div>
+            <p class="numberCircle${product.rating}">${product.rating}</p>
           </div>
       </section>`
         document.querySelector('#products').innerHTML += template;
@@ -131,6 +135,7 @@ document.querySelector('#go').onclick = async () => {
         .then((products) => {
             load_results(products);
         });
+<<<<<<< HEAD
     get("amazon.com/s?k=yogurt").then((result) => {
         result.text().then((data) => {
             console.log(data);
@@ -153,6 +158,10 @@ document.querySelector('#go').onclick = async () => {
         });
     })
     // console.log(htmlObj.querySelectorAll("div[data-index]")[0].innerHTML);
+=======
+    var r = document.getElementById("results")
+    r.style.visibility = "visible";
+>>>>>>> master
 };
 
 const get_company_amazon = async (url) => {
@@ -174,5 +183,7 @@ document.querySelector('#search-terms').onkeypress = (event) => {
             .then((products) => {
                 load_results(products);
             });
+        var r = document.getElementById("results")
+        r.style.visibility = "visible";
     };
 };
