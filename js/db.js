@@ -2,7 +2,8 @@
 
 const get = async (url) => {
     console.log(url);
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    // const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests
     // const proxyurl = "https://localhost:8080/";
     console.log(proxyurl + url);
     let data = await fetch(proxyurl + url);
@@ -25,7 +26,7 @@ const search_gg = async (keywords, sortby, pagenum) => {
     } else {
         pagenum = "1";
     }
-    const url = "https://www.goodguide.com/catalog/search.json?filter=" + keywords + "&sort=" + sort_term + "&page=" + pagenum;
+    const url = "www.goodguide.com/catalog/search.json?filter=" + keywords + "&sort=" + sort_term + "&page=" + pagenum;
 
     const resp = await get(url);
     //console.log(resp);
@@ -60,6 +61,31 @@ const search_wal = async (keywords) => {
     return data;
 }
 
+const search_amazon = async (keywords) => {
+    keyword_term = encodeURIComponent(sortby.trim());
+    const url = "amazon.com/s?k=" + keyword_term;
+    const resp = await get(url);
+    console.log(resp);
+    let data = await resp.text();
+    console.log(data);
+    var htmlObject = document.createElement('div');
+    htmlObject.innerHTML = data;
+    let interesting_stuff = htmlObject.querySelectorAll("div[data-index]");
+
+    let imgs = htmlObject.getElementsByTagName("img");
+    console.log(imgs);
+    for (img of imgs) {
+        console.log(img.src);
+    }
+    console.log(interesting_stuff[0].getElementsByClassName(""));
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(interesting_stuff, "application/xml");
+    console.log(xmlDoc);
+
+    return data;
+}
+
+//
 const get_products = async () => {
     console.log(document.getElementById("search-terms").value);
     sortby = document.getElementById("sortby").value;
@@ -104,14 +130,28 @@ const load_results = (products) => {
     };
 };
 
-document.querySelector('#go').onclick = () => {
+document.querySelector('#go').onclick = async () => {
     get_products()
         .then((products) => {
             load_results(products);
         });
+    // console.log(htmlObj.querySelectorAll("div[data-index]")[0].innerHTML);
     var r = document.getElementById("results")
     r.style.visibility = "visible";
 };
+
+const get_company_amazon = async (url) => {
+    let response = await get(url);
+    let data = await response.text();
+    let htmlObj = document.createElement("div");
+    htmlObj.innerHTML = data;
+    console.log(data);
+    let desired = htmlObj.querySelector("#byline_info_feature_div");
+    console.log(desired.innerHTML);
+    return desired.innerHTML;
+}
+
+
 document.querySelector('#search-terms').onkeypress = (event) => {
     enter_pressed = search_on_enter(event); //determine if enter was the key pressed
     if (enter_pressed) { // if so, get products and load them
