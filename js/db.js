@@ -91,9 +91,11 @@ const load_results = (products) => {
               <img src="${product.image}">
           </div>
           <div class ="right">
-              <h4>${product.name}</h4>
-              <h4>Brand: ${product.brand.name}</h4>
-              <h4>Rating: ${product.rating}</h4>
+              <h1 id="prod_name">${product.name}</h1>
+              <p>${product.brand.name}</p>
+          </div>
+          <div>
+            <p class="numberCircle${product.rating}">${product.rating}</p>
           </div>
       </section>`
         document.querySelector('#products').innerHTML += template;
