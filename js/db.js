@@ -135,27 +135,6 @@ document.querySelector('#go').onclick = async () => {
         .then((products) => {
             load_results(products);
         });
-    get("amazon.com/s?k=yogurt").then((result) => {
-        result.text().then((data) => {
-            console.log(data);
-            let htmlObj = document.createElement("div");
-            htmlObj.innerHTML = data;
-
-            for (obj of htmlObj.querySelectorAll("div[data-index]")) {
-                // console.log(obj.innerHTML);
-                if (obj.data_asin != "") {
-                    document.querySelector('p').innerHTML += obj.innerHTML;
-                    let htmlObj = document.createElement("div");
-                    htmlObj.innerHTML = obj.innerHTML;
-                    console.log(htmlObj.querySelector("img").src);
-                    get_company_amazon("amazon.com" + htmlObj.querySelector("a[href]").href.replace(location.origin, ''))
-                        .then((ret) => {
-                            console.log(ret);
-                        })
-                }
-            }
-        });
-    })
     // console.log(htmlObj.querySelectorAll("div[data-index]")[0].innerHTML);
     var r = document.getElementById("results")
     r.style.visibility = "visible";
