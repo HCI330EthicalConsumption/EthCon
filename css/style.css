@@ -173,15 +173,16 @@ main {
 }
 
 .search-terms {
-    width: 73%;
+    width: 72%;
     border: 3px solid rgba(19, 194, 194,.6);
-    border-right: none;
+    /* border-right: 1px; */
+    /* border-bottom: 1px; */
     padding-top: 8px;
     padding-bottom: 6.5px;
     padding-left: 3px;
     padding-right: 0;
     height: 31px;
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px 5px 5px 5px;
     outline: none;
     color: rgba(0,0,0,.8);
     font-size: 17px;
@@ -200,7 +201,7 @@ main {
     background: rgba(19, 194, 194,.6);
     text-align: center;
     color:white;
-    border-radius: 0px 5px 5px 0;
+    border-radius: 5px 5px 5px 5px;
     cursor: pointer;
     font-size: 20px;
     padding-top: 2px;
