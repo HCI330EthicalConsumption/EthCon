@@ -55,6 +55,7 @@ main {
     border-bottom: 3px solid rgba(19, 194, 194,.6);
     display: inline-block;
     /* text-shadow: -1px 1px rgba(0,0,0,.3) */
+    visibility: hidden;
 }
 
 .left {
@@ -264,7 +265,7 @@ main {
 }
 
 #header {
-    position: relative;
+    position: fixed;
     z-index: 10;
     max-width: 100%;
     background: #fff;
@@ -302,6 +303,7 @@ body{
 }
 
 #product-section{
+    padding-top: 48px;
     padding-right: 48px;
     padding-left: 48px;
 }
@@ -544,3 +546,13 @@ body{
     margin-bottom: 40px;
     background:#a0d911;
 }
+/* 
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%
+  }
+
+  /* .sticky + .product-section {
+    padding-top: 102px;
+  } */ */
