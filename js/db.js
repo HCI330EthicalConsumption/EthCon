@@ -61,6 +61,31 @@ const search_wal = async (keywords) => {
     return data;
 }
 
+const search_amazon = async (keywords) => {
+    keyword_term = encodeURIComponent(sortby.trim());
+    const url = "amazon.com/s?k=" + keyword_term;
+    const resp = await get(url);
+    console.log(resp);
+    let data = await resp.text();
+    console.log(data);
+    var htmlObject = document.createElement('div');
+    htmlObject.innerHTML = data;
+    let interesting_stuff = htmlObject.querySelectorAll("div[data-index]");
+
+    let imgs = htmlObject.getElementsByTagName("img");
+    console.log(imgs);
+    for (img of imgs) {
+        console.log(img.src);
+    }
+    console.log(interesting_stuff[0].getElementsByClassName(""));
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(interesting_stuff, "application/xml");
+    console.log(xmlDoc);
+
+    return data;
+}
+
+//
 const get_products = async () => {
     console.log(document.getElementById("search-terms").value);
     sortby = document.getElementById("sortby").value;
@@ -101,13 +126,11 @@ const load_results = (products) => {
     };
 };
 
-document.querySelector('#go').onclick = () => {
+document.querySelector('#go').onclick = async () => {
     get_products()
         .then((products) => {
             load_results(products);
         });
-    document.querySelectorAll("p[data-boi='hello'")[0].innerHTML = "world";
-
     get("amazon.com/s?k=yogurt").then((result) => {
         result.text().then((data) => {
             console.log(data);
@@ -121,15 +144,27 @@ document.querySelector('#go').onclick = () => {
                     let htmlObj = document.createElement("div");
                     htmlObj.innerHTML = obj.innerHTML;
                     console.log(htmlObj.querySelector("img").src);
+                    get_company_amazon("amazon.com" + htmlObj.querySelector("a[href]").href.replace(location.origin, ''))
+                        .then((ret) => {
+                            console.log(ret);
+                        })
                 }
             }
         });
     })
-
     // console.log(htmlObj.querySelectorAll("div[data-index]")[0].innerHTML);
-
-
 };
+
+const get_company_amazon = async (url) => {
+    let response = await get(url);
+    let data = await response.text();
+    let htmlObj = document.createElement("div");
+    htmlObj.innerHTML = data;
+    console.log(data);
+    let desired = htmlObj.querySelector("#byline_info_feature_div");
+    console.log(desired.innerHTML);
+    return desired.innerHTML;
+}
 
 
 document.querySelector('#search-terms').onkeypress = (event) => {
