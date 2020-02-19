@@ -2,15 +2,15 @@
 
 const get = async (url) => {
     console.log(url);
-    // const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests
-    // const proxyurl = "https://localhost:8080/";
+    // const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
+    const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
     console.log(proxyurl + url);
     let data = await fetch(proxyurl + url);
     return data;
 }
 // takes in keywords to search for and returns a list of product json objects. Returns up to 21 products.
-// MUST USE THE KEYWORD "await" WHEN CALLING OR IT WILL RETURN A Promise OBJECT WHICH I CAN'T FIND A USE FOR
+// IF ASSIGNING TO VARIABLE, MUST USE THE KEYWORD "await"
+// OTHERWISE USE THE .then() callback function
 // keywords => terms to search by. Can include spaces.
 // sortby => 'rating' or 'relevance'. default is relevance.
 // pagenum => int or string of the page number requesting.
@@ -29,15 +29,12 @@ const search_gg = async (keywords, sortby, pagenum) => {
     const url = "www.goodguide.com/catalog/search.json?filter=" + keywords + "&sort=" + sort_term + "&page=" + pagenum;
 
     const resp = await get(url);
-    //console.log(resp);
     let data = await resp.json();
     console.log(data);
-    // load_results(data.products);
     return data.products;
 }
 //Not useable yet
 const search_wal = async (keywords) => {
-    // const url = "https://www.walmart.com/search/?query=" + keywords;
     const url = "https://www.walmart.com/search/?query=" + keywords;
     const resp = await get(url);
     console.log(resp);
@@ -85,15 +82,13 @@ const search_amazon = async (keywords) => {
     return data;
 }
 
-//
+//returns products for a good guides query
 const get_products = async () => {
     console.log(document.getElementById("search-terms").value);
     sortby = document.getElementById("sortby").value;
     console.log(sortby);
     search_terms = document.getElementById("search-terms").value
     data = await search_gg(search_terms, sortby, 1);
-    // data = await search_wal(search_terms);
-    // load_results(data);
     return data;
 };
 
@@ -128,16 +123,27 @@ const load_results = (products) => {
       </section>`
         document.querySelector('#products').innerHTML += template;
     };
+    if (products.length == 0) {
+        document.getElementById("results").innerHTML = "No Results Found :(";
+        // ¯\\_(ツ)_/¯
+    } else {
+        document.getElementById("results").innerHTML = "Results";
+    }
 };
 
-document.querySelector('#go').onclick = async () => {
+const search_and_load = () => {
+    document.getElementById("results").innerHTML = "Searching...";
+
     get_products()
         .then((products) => {
             load_results(products);
         });
-    // console.log(htmlObj.querySelectorAll("div[data-index]")[0].innerHTML);
     var r = document.getElementById("results")
     r.style.visibility = "visible";
+}
+
+document.querySelector('#go').onclick = async () => {
+    search_and_load();
 };
 
 const get_company_amazon = async (url) => {
@@ -155,11 +161,13 @@ const get_company_amazon = async (url) => {
 document.querySelector('#search-terms').onkeypress = (event) => {
     enter_pressed = search_on_enter(event); //determine if enter was the key pressed
     if (enter_pressed) { // if so, get products and load them
-        get_products()
-            .then((products) => {
-                load_results(products);
-            });
-        var r = document.getElementById("results")
-        r.style.visibility = "visible";
+        search_and_load();
     };
+};
+
+document.querySelector("#sortby").onchange = async () => {
+    if (document.getElementById("search-terms").value != "") {
+        search_and_load();
+    }
+
 };
