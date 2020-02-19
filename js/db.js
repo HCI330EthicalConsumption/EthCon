@@ -97,7 +97,7 @@ const load_results = (products) => {
               <p>${product.brand.name}</p>
           </div>
           <div>
-            <p class="numberCircle${product.rating}">${product.rating}</p>
+            <p class="numberCircle${product.rating} numberCircle">${product.rating}</p>
           </div>
       </section>`
         document.querySelector('#products').innerHTML += template;
