@@ -308,6 +308,11 @@ body{
     padding-left: 48px;
 }
 
+.product-card:hover{
+    /* background-color: #fafafa; */
+    border-color: #08979c;
+}
+
 .numberCircle {
     border-radius: 50%;
     width: 70px;
