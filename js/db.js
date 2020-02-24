@@ -33,57 +33,9 @@ const search_gg = async (keywords, sortby, pagenum) => {
     console.log(data);
     return data.products;
 }
-//Not useable yet
-const search_wal = async (keywords) => {
-    const url = "https://www.walmart.com/search/?query=" + keywords;
-    const resp = await get(url);
-    console.log(resp);
-    let data2 = await resp.text();
-    console.log(data2);
-    var htmlObject = document.createElement('div');
-    htmlObject.innerHTML = data2;
-    let interesting_stuff = htmlObject.getElementsByClassName("search-result-gridview-items");
-    htmlObject.innerHTML = data2;
-    let imgs = htmlObject.getElementsByTagName("img");
-    console.log(imgs);
-    for (img of imgs) {
-        console.log(img.src);
-    }
-    console.log(interesting_stuff[0].getElementsByClassName(""));
-    let parser = new DOMParser();
-    let xmlDoc = parser.parseFromString(interesting_stuff, "application/xml");
-    console.log(xmlDoc);
-    let data = xmlToJson(xmlDoc);
-    console.log(JSON.stringify(data));
-    return data;
-}
-
-const search_amazon = async (keywords) => {
-    keyword_term = encodeURIComponent(sortby.trim());
-    const url = "amazon.com/s?k=" + keyword_term;
-    const resp = await get(url);
-    console.log(resp);
-    let data = await resp.text();
-    console.log(data);
-    var htmlObject = document.createElement('div');
-    htmlObject.innerHTML = data;
-    let interesting_stuff = htmlObject.querySelectorAll("div[data-index]");
-
-    let imgs = htmlObject.getElementsByTagName("img");
-    console.log(imgs);
-    for (img of imgs) {
-        console.log(img.src);
-    }
-    console.log(interesting_stuff[0].getElementsByClassName(""));
-    let parser = new DOMParser();
-    let xmlDoc = parser.parseFromString(interesting_stuff, "application/xml");
-    console.log(xmlDoc);
-
-    return data;
-}
 
 //returns products for a good guides query
-const get_products = async () => {
+const search_products = async () => {
     console.log(document.getElementById("search-terms").value);
     sortby = document.getElementById("sortby").value;
     console.log(sortby);
@@ -109,7 +61,7 @@ const search_on_enter = (event) => {
 const load_results = (products) => {
     document.querySelector('#products').innerHTML = '';
     for (product of products) {
-        const template = `<section class="product-card" id="${product.id}">
+        const template = `<section class="product-card" id="${product.id}" product-url="${product.url}">
           <div class="left">
               <img src="${product.image}">
           </div>
@@ -129,12 +81,22 @@ const load_results = (products) => {
     } else {
         document.getElementById("results").innerHTML = "Results";
     }
+
+    // onClick functions -- have product page maker be called in this
+    for (card of document.querySelectorAll(".product-card")) {
+        card.onclick = async (event) => {
+            console.log(event.currentTarget.getAttribute("class"));
+            url = event.currentTarget.getAttribute("product-url");
+            let product_info = await get_product_info(url);
+            console.log(product_info);
+            // Make product page with the product_info
+        }
+    }
 };
 
 const search_and_load = () => {
     document.getElementById("results").innerHTML = "Searching...";
-
-    get_products()
+    search_products()
         .then((products) => {
             load_results(products);
         });
@@ -142,21 +104,132 @@ const search_and_load = () => {
     r.style.visibility = "visible";
 }
 
+// parse_product_*: used as halper functions is get_product_info 
+const parse_product_about = (htmlObject) => {
+    try {
+        return htmlObject.querySelector("#product-about p").innerHTML;
+    } catch {
+        console.log("Error trying to get product about info");
+        return "Product info not found";
+    }
+}
+const parse_product_related = (htmlObject) => {
+    let related_products = [];
+    let i = 0;
+    try {
+        for (item of htmlObject.querySelectorAll(".side-section > .product-card")) {
+            related_products[i] = {}
+            related_products[i].url = item.querySelector(".gg-analytics a").getAttribute("href");
+            related_products[i].img = item.querySelector("img").src;
+            related_products[i].name = item.querySelector(".product-card-title a").innerHTML;
+            related_products[i].rating = item.querySelector(".ring-value a").innerHTML;
+            related_products[i].parent_company = item.querySelector(".product-card-brand a").innerHTML;
+            i += 1;
+        }
+    } catch {
+        console.log("Error getting related products");
+        return [];
+    }
+    return related_products;
+}
+const parse_product_rating_details = (htmlObject) => {
+    let info = [];
+    let i = 0;
+    try {
+        for (item of htmlObject.querySelectorAll(".rating-explained > li")) {
+            info[i] = {};
+            info[i].criterion = item.querySelector(".ring-caption").innerHTML;
+            info[i].rating = item.querySelector(".ring-value a").innerHTML;
+            i += 1;
+        }
+    } catch {
+        console.log("Error trying to get rating details")
+        return [];
+    }
+
+    return info;
+}
+const parse_product_parent_companies = (htmlObject) => {
+    let parents = [];
+    let i = 0;
+    try {
+        let items = htmlObject.querySelectorAll("ul.list > li > ul.no-bullet.list-detail > li > div");
+        for (item of items) {
+            try {
+                if (item.getAttribute("data-event-name") == "Clicked company") {
+                    parents[i] = item.querySelector("a").innerHTML;
+                    i += 1;
+                }
+            } catch {
+                console.log("Error finding parent companies");
+            }
+        }
+    } catch {
+        console.log("Error trying to get parent companies")
+        return ["Parent company not found"];
+    }
+    return parents;
+}
+const parse_product_rating = (htmlObject) => {
+    try {
+        return htmlObject.querySelector(".product-donut p.number a").innerHTML;
+    } catch (err) {
+        console.log("Error trying to get product rating");
+        return "X";
+    }
+}
+const parse_product_name = (htmlObject) => {
+    try {
+        return htmlObject.querySelector(".product-highlight h1.text-center").innerHTML;
+    } catch (err) {
+        console.log("Error trying to get product name");
+        return "Error: Product name not found";
+    }
+}
+const parse_product_img = (htmlObject) => {
+    try {
+        return htmlObject.querySelector(".product-highlight-image img").src;
+    } catch (err) {
+        console.log("Error trying to get product image");
+        return "";
+    }
+
+}
+
+// Takes the product url extension (e.g. "/products/402220-phyto-phytovolume-shampoo-volumizing-fine-hair") and returns a product_info object
+//  Async function, so must be called with a callback ( a .then function ) or wrapped in another async function with the keyword await 
+//  ex. let product_info = await(get_product_info(url)
+//  ex. get_product_info(url).then((product_info) => {
+//          (do something with product_info)
+//      })
+const get_product_info = async (prod_url) => {
+    const url = "www.goodguide.com" + prod_url + "#/";
+    const resp = await get(url);
+    let data = await resp.text();
+    let productPageHTML = document.createElement('div');
+    productPageHTML.innerHTML = data;
+    let about = parse_product_about(productPageHTML);
+    let rating = parse_product_rating(productPageHTML);
+    let related_products = parse_product_related(productPageHTML);
+    let rating_info = parse_product_rating_details(productPageHTML);
+    let name = parse_product_name(productPageHTML);
+    let img = parse_product_img(productPageHTML);
+    let parent_companies = parse_product_parent_companies(productPageHTML);
+    let product_info = {
+        "name": name, // string
+        "img": img, // url to image 
+        "rating": rating, // number
+        "rating_info": rating_info, // list of json objects {"criterion": "example criterion", "rating":"5"}
+        "about": about, // string of about paragraph
+        "parent_companies": parent_companies, // list of strings of parent companies
+        "related_products": related_products //json objects with properties {url, image, rating, name, parent_company}
+    }
+    return product_info;
+}
+
 document.querySelector('#go').onclick = async () => {
     search_and_load();
 };
-
-const get_company_amazon = async (url) => {
-    let response = await get(url);
-    let data = await response.text();
-    let htmlObj = document.createElement("div");
-    htmlObj.innerHTML = data;
-    console.log(data);
-    let desired = htmlObj.querySelector("#byline_info_feature_div");
-    console.log(desired.innerHTML);
-    return desired.innerHTML;
-}
-
 
 document.querySelector('#search-terms').onkeypress = (event) => {
     enter_pressed = search_on_enter(event); //determine if enter was the key pressed
@@ -164,6 +237,11 @@ document.querySelector('#search-terms').onkeypress = (event) => {
         search_and_load();
     };
 };
+
+// document.querySelector(".product-card").onclick = (event) => {
+//     url = event.target.getAttribute("product-url");
+//     get_product_info(url);
+// }
 
 document.querySelector("#sortby").onchange = async () => {
     if (document.getElementById("search-terms").value != "") {
