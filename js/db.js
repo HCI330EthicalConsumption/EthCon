@@ -2,8 +2,8 @@
 
 const get = async (url) => {
     console.log(url);
-    // const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
-    const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
+    const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
+    //const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
     console.log(proxyurl + url);
     let data = await fetch(proxyurl + url);
     return data;
@@ -90,9 +90,46 @@ const load_results = (products) => {
             let product_info = await get_product_info(url);
             console.log(product_info);
             // Make product page with the product_info
+            document.querySelector(".modal-body").innerHTML = 
+              `<div>${product_info.name}</div>
+               <div class="modal-img">
+                 <img src="${product_info.img}">
+              </div>
+              <div>Parent Company: ${product_info.parent_companies[0]}</div>
+              <div>Ethical Responsibility: ${product_info.rating}</div>`;
+              document.querySelector(".modal-body").innerHTML += parse_rating_info(product_info.rating_info);
+              document.querySelector(".modal-body").innerHTML += `<div>About the Product: ${product_info.about}</div>`;
+              document.querySelector(".modal-body").innerHTML += parse_related_products(product_info.related_products);
+	    var modal = document.getElementById("myModal");
+            modal.style.display = "block";
+
         }
     }
 };
+
+const parse_rating_info = (ratingInfo) => {
+    let str = "<div>Rating details: "; 
+    for(info of ratingInfo){
+       str += `
+         <div>${info.criterion}</div>
+         <div>${info.rating}</div>`;
+    }
+    str += "</div>";
+    return str; 
+}
+
+const parse_related_products = (relatedProducts) => {
+    let str = "<div>Related Products: "; 
+    for(product of relatedProducts){
+       str += `
+         <div>
+           <img src="${product.img}">
+         </div>
+         <div>${product.name}</div>`;
+    }
+    str += "</div>";
+    return str; 
+}
 
 const search_and_load = () => {
     document.getElementById("results").innerHTML = "Searching...";
@@ -248,4 +285,16 @@ document.querySelector("#sortby").onchange = async () => {
         search_and_load();
     }
 
+};
+
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+  modal.style.display = "none";
+};
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 };
