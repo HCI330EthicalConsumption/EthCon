@@ -225,6 +225,24 @@ main {
     margin: 0;
 }
 
+.add {
+    width: 18%;
+    height: 31px;
+    border: 1px solid rgba(19, 194, 194, .6);
+    border-left: none;
+    background: rgba(19, 194, 194, .6);
+    text-align: center;
+    color: white;
+    border-radius: 5px 5px 5px 5px;
+    cursor: pointer;
+    font-size: 15px;
+    padding-top: 2px;
+    padding-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0;
+}
+
 i {
     padding: 0;
     margin: 0;
