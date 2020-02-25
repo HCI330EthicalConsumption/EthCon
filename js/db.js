@@ -2,8 +2,8 @@
 
 const get = async (url) => {
     console.log(url);
-    const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
-    //const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
+    //const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
+    const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
     console.log(proxyurl + url);
     let data = await fetch(proxyurl + url);
     return data;
