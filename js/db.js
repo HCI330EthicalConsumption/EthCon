@@ -219,7 +219,7 @@ const get_product_info = async (prod_url) => {
         "name": name, // string
         "img": img, // url to image 
         "rating": rating, // number
-        "rating_info": rating_info, // list of json objects {"criterion": "example criterion", "rating":"5"}
+        "rating_info": rating_info, // list of json objects {"criterion": "Ingedient hazard", "rating":"5"}
         "about": about, // string of about paragraph
         "parent_companies": parent_companies, // list of strings of parent companies
         "related_products": related_products //json objects with properties {url, image, rating, name, parent_company}
