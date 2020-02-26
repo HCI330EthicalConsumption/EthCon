@@ -39,7 +39,7 @@ const search_products = async () => {
     console.log(document.getElementById("search-terms").value);
     sortby = document.getElementById("sortby").value;
     console.log(sortby);
-    search_terms = document.getElementById("search-terms").value
+    search_terms = document.getElementById("search-terms").value;
     data = await search_gg(search_terms, sortby, 1);
     return data;
 };
@@ -91,7 +91,7 @@ const load_results = (products) => {
             console.log(url);
             console.log(product_info);
             // Make product page with the product_info
-            document.querySelector(".modal-body").innerHTML = 
+            document.querySelector(".modal-body").innerHTML =
               `<div id="modal_overall" product_url="${product_info.product_url}">${product_info.name}</div>
                <div class="modal-img">
                  <img src="${product_info.img}">
@@ -141,18 +141,18 @@ const get_reviews = async (product_url) =>{
 }
 
 const parse_rating_info = (ratingInfo) => {
-    let str = "<div>Rating details: "; 
+    let str = "<div>Rating details: ";
     for(info of ratingInfo){
        str += `
          <div>${info.criterion}</div>
          <div>${info.rating}</div>`;
     }
     str += "</div>";
-    return str; 
+    return str;
 }
 
 const parse_related_products = (relatedProducts) => {
-    let str = "<div>Related Products: "; 
+    let str = "<div>Related Products: ";
     for(product of relatedProducts){
        str += `<div product_url="${product.url}">
             <div>
@@ -162,10 +162,17 @@ const parse_related_products = (relatedProducts) => {
          </div>`;
     }
     str += "</div>";
-    return str; 
+    return str;
 }
 
 const search_and_load = () => {
+    search_terms = document.getElementById("search-terms").value;
+    console.log(search_terms);
+    console.log('here');
+    if(search_terms == ""){
+      alert("Please enter valid search term");
+      return false;
+    }
     document.getElementById("results").innerHTML = "Searching...";
     search_products()
         .then((products) => {
@@ -175,7 +182,7 @@ const search_and_load = () => {
     r.style.visibility = "visible";
 }
 
-// parse_product_*: used as halper functions is get_product_info 
+// parse_product_*: used as halper functions is get_product_info
 const parse_product_about = (htmlObject) => {
     try {
         return htmlObject.querySelector("#product-about p").innerHTML;
@@ -268,7 +275,7 @@ const parse_product_img = (htmlObject) => {
 }
 
 // Takes the product url extension (e.g. "/products/402220-phyto-phytovolume-shampoo-volumizing-fine-hair") and returns a product_info object
-//  Async function, so must be called with a callback ( a .then function ) or wrapped in another async function with the keyword await 
+//  Async function, so must be called with a callback ( a .then function ) or wrapped in another async function with the keyword await
 //  ex. let product_info = await(get_product_info(url)
 //  ex. get_product_info(url).then((product_info) => {
 //          (do something with product_info)
@@ -289,7 +296,7 @@ const get_product_info = async (prod_url) => {
     let product_info = {
         "product_url": prod_url,
         "name": name, // string
-        "img": img, // url to image 
+        "img": img, // url to image
         "rating": rating, // number
         "rating_info": rating_info, // list of json objects {"criterion": "example criterion", "rating":"5"}
         "about": about, // string of about paragraph
