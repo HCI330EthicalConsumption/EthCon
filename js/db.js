@@ -1,9 +1,14 @@
 // import DatePicker from 'antd/es/date-picker'
 
+let numberPerPage = 5;
+let numberOfPages = 0;
+let currentPage = 1;
+let productList = null;
+
 const get = async (url) => {
     console.log(url);
-    //const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
-    const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
+    const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
+    // const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
     console.log(proxyurl + url);
     let data = await fetch(proxyurl + url);
     return data;
@@ -39,8 +44,11 @@ const search_products = async () => {
     console.log(document.getElementById("search-terms").value);
     sortby = document.getElementById("sortby").value;
     console.log(sortby);
-    search_terms = document.getElementById("search-terms").value
+    search_terms = document.getElementById("search-terms").value;
     data = await search_gg(search_terms, sortby, 1);
+    numberOfPages = Math.ceil(data.length/numberPerPage);
+    productList = data;
+    generatePaginationHtml(numberOfPages, 1);
     return data;
 };
 
@@ -56,11 +64,36 @@ const search_on_enter = (event) => {
     return false;
 }
 
+function generatePaginationHtml(totalCount, currentPage) {
+    let template = `
+    <div class="pwrap">`;
+    for (let i =1; i <= totalCount; i++) {
+      template += `
+        <div class = "pagination"><a "`;
+      if(currentPage == i) {
+        template += `class="active" `;
+      }
+      template += `href="#" onclick="loadPage(` + i + `)">` + i + `</a></div>`;
+    }
+    template += `
+        </div>`;
+    document.querySelector('#navigation').innerHTML = template;
+};
+
+function loadPage(i) {
+    currentPage = i;
+    load_results(productList);
+}
+
 // Given an array of product json objects, loads the products into the #product HTML element.
 //  Each product json object should include: id, image, name, brand.name, and rating
 const load_results = (products) => {
+    generatePaginationHtml(numberOfPages, currentPage);
+    let begin = ((currentPage - 1) * numberPerPage);
+    let end = begin + numberPerPage;
+    let p = products.slice(begin, end);
     document.querySelector('#products').innerHTML = '';
-    for (product of products) {
+    for (product of p) {
         const template = `<section class="product-card" id="${product.id}" product-url="${product.url}">
           <div class="left">
               <img src="${product.image}">
@@ -75,12 +108,13 @@ const load_results = (products) => {
       </section>`
         document.querySelector('#products').innerHTML += template;
     };
-    if (products.length == 0) {
+    if (p.length == 0) {
         document.getElementById("results").innerHTML = "No Results Found :(";
         // ¯\\_(ツ)_/¯
     } else {
         document.getElementById("results").innerHTML = "Results";
     }
+    //check();
 
     // onClick functions -- have product page maker be called in this
     for (card of document.querySelectorAll(".product-card")) {
@@ -91,7 +125,7 @@ const load_results = (products) => {
             console.log(url);
             console.log(product_info);
             // Make product page with the product_info
-            document.querySelector(".modal-body").innerHTML = 
+            document.querySelector(".modal-body").innerHTML =
               `<div id="modal_overall" product_url="${product_info.product_url}">${product_info.name}</div>
                <div class="modal-img">
                  <img src="${product_info.img}">
@@ -110,6 +144,13 @@ const load_results = (products) => {
 
         }
     }
+};
+
+function check() {
+    document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
+    document.getElementById("previous").disabled = currentPage == 1 ? true : false;
+    document.getElementById("first").disabled = currentPage == 1 ? true : false;
+    document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
 };
 
 const display_reviews = (reviews) =>{
@@ -141,18 +182,18 @@ const get_reviews = async (product_url) =>{
 }
 
 const parse_rating_info = (ratingInfo) => {
-    let str = "<div>Rating details: "; 
+    let str = "<div>Rating details: ";
     for(info of ratingInfo){
        str += `
          <div>${info.criterion}</div>
          <div>${info.rating}</div>`;
     }
     str += "</div>";
-    return str; 
+    return str;
 }
 
 const parse_related_products = (relatedProducts) => {
-    let str = "<div>Related Products: "; 
+    let str = "<div>Related Products: ";
     for(product of relatedProducts){
        str += `<div product_url="${product.url}">
             <div>
@@ -162,10 +203,16 @@ const parse_related_products = (relatedProducts) => {
          </div>`;
     }
     str += "</div>";
-    return str; 
+    return str;
 }
 
 const search_and_load = () => {
+    search_terms = document.getElementById("search-terms").value;
+    console.log(search_terms);
+    if(search_terms == ""){
+      alert("Please enter valid search term");
+      return false;
+    }
     document.getElementById("results").innerHTML = "Searching...";
     search_products()
         .then((products) => {
@@ -175,7 +222,7 @@ const search_and_load = () => {
     r.style.visibility = "visible";
 }
 
-// parse_product_*: used as halper functions is get_product_info 
+// parse_product_*: used as halper functions is get_product_info
 const parse_product_about = (htmlObject) => {
     try {
         return htmlObject.querySelector("#product-about p").innerHTML;
@@ -268,7 +315,7 @@ const parse_product_img = (htmlObject) => {
 }
 
 // Takes the product url extension (e.g. "/products/402220-phyto-phytovolume-shampoo-volumizing-fine-hair") and returns a product_info object
-//  Async function, so must be called with a callback ( a .then function ) or wrapped in another async function with the keyword await 
+//  Async function, so must be called with a callback ( a .then function ) or wrapped in another async function with the keyword await
 //  ex. let product_info = await(get_product_info(url)
 //  ex. get_product_info(url).then((product_info) => {
 //          (do something with product_info)
@@ -289,7 +336,7 @@ const get_product_info = async (prod_url) => {
     let product_info = {
         "product_url": prod_url,
         "name": name, // string
-        "img": img, // url to image 
+        "img": img, // url to image
         "rating": rating, // number
         "rating_info": rating_info, // list of json objects {"criterion": "example criterion", "rating":"5"}
         "about": about, // string of about paragraph
@@ -432,3 +479,4 @@ document.querySelector('#star4').onclick = async () => {
 document.querySelector('#star5').onclick = async () => {
     document.querySelector('#rating').value =5;
 }
+
