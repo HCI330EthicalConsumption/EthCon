@@ -128,7 +128,7 @@ const display_reviews = (reviews) =>{
 }
 
 const get_reviews = async (product_url) =>{
-    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?where=product_url%3D\'' +product_url.replace(/\//g, "%2f"), {
+    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?where=product_url%3D\'' +product_url.replace(/\//g, "%2F") + "'", {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
