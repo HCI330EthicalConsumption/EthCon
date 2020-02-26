@@ -1,9 +1,14 @@
 // import DatePicker from 'antd/es/date-picker'
 
+let numberPerPage = 5;
+let numberOfPages = 0;
+let currentPage = 1;
+let productList = null;
+
 const get = async (url) => {
     console.log(url);
-    //const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
-    const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
+    const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
+    // const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
     console.log(proxyurl + url);
     let data = await fetch(proxyurl + url);
     return data;
@@ -41,6 +46,9 @@ const search_products = async () => {
     console.log(sortby);
     search_terms = document.getElementById("search-terms").value;
     data = await search_gg(search_terms, sortby, 1);
+    numberOfPages = Math.ceil(data.length/numberPerPage);
+    productList = data;
+    generatePaginationHtml(numberOfPages, 1);
     return data;
 };
 
@@ -56,11 +64,36 @@ const search_on_enter = (event) => {
     return false;
 }
 
+function generatePaginationHtml(totalCount, currentPage) {
+    let template = `
+    <div class="pwrap">`;
+    for (let i =1; i <= totalCount; i++) {
+      template += `
+        <div class = "pagination"><a "`;
+      if(currentPage == i) {
+        template += `class="active" `;
+      }
+      template += `href="#" onclick="loadPage(` + i + `)">` + i + `</a></div>`;
+    }
+    template += `
+        </div>`;
+    document.querySelector('#navigation').innerHTML = template;
+};
+
+function loadPage(i) {
+    currentPage = i;
+    load_results(productList);
+}
+
 // Given an array of product json objects, loads the products into the #product HTML element.
 //  Each product json object should include: id, image, name, brand.name, and rating
 const load_results = (products) => {
+    generatePaginationHtml(numberOfPages, currentPage);
+    let begin = ((currentPage - 1) * numberPerPage);
+    let end = begin + numberPerPage;
+    let p = products.slice(begin, end);
     document.querySelector('#products').innerHTML = '';
-    for (product of products) {
+    for (product of p) {
         const template = `<section class="product-card" id="${product.id}" product-url="${product.url}">
           <div class="left">
               <img src="${product.image}">
@@ -75,12 +108,13 @@ const load_results = (products) => {
       </section>`
         document.querySelector('#products').innerHTML += template;
     };
-    if (products.length == 0) {
+    if (p.length == 0) {
         document.getElementById("results").innerHTML = "No Results Found :(";
         // ¯\\_(ツ)_/¯
     } else {
         document.getElementById("results").innerHTML = "Results";
     }
+    //check();
 
     // onClick functions -- have product page maker be called in this
     for (card of document.querySelectorAll(".product-card")) {
@@ -110,6 +144,13 @@ const load_results = (products) => {
 
         }
     }
+};
+
+function check() {
+    document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
+    document.getElementById("previous").disabled = currentPage == 1 ? true : false;
+    document.getElementById("first").disabled = currentPage == 1 ? true : false;
+    document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
 };
 
 const display_reviews = (reviews) =>{
@@ -168,7 +209,6 @@ const parse_related_products = (relatedProducts) => {
 const search_and_load = () => {
     search_terms = document.getElementById("search-terms").value;
     console.log(search_terms);
-    console.log('here');
     if(search_terms == ""){
       alert("Please enter valid search term");
       return false;
