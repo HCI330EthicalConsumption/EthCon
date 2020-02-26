@@ -91,7 +91,7 @@ const load_results = (products) => {
             console.log(product_info);
             // Make product page with the product_info
             document.querySelector(".modal-body").innerHTML = 
-              `<div>${product_info.name}</div>
+              `<div id="modal_overall" product_url="${product_info.product_url}">${product_info.name}</div>
                <div class="modal-img">
                  <img src="${product_info.img}">
               </div>
@@ -100,12 +100,41 @@ const load_results = (products) => {
               document.querySelector(".modal-body").innerHTML += parse_rating_info(product_info.rating_info);
               document.querySelector(".modal-body").innerHTML += `<div>About the Product: ${product_info.about}</div>`;
               document.querySelector(".modal-body").innerHTML += parse_related_products(product_info.related_products);
+              get_reviews(product_info.product_url)
+                .then((data) => {
+                    display_reviews(data);
+                });
 	    var modal = document.getElementById("myModal");
             modal.style.display = "block";
 
         }
     }
 };
+
+const display_reviews = (reviews) =>{
+    document.querySelector(".prev_reviews").innerHTML = '<h2>Previous Reviews</h2>';
+    for (review of reviews) {
+        const template = `<section class="review-card" id="${review.product_url}" product-url="${product.url}">
+            <div class="name">${review.name} rated it ${review.rating}</div>
+            <div class="review_text">${review.review_text}</div>
+            <div class="recommended">Would recommend? ${review.recommend}</div>
+      </section>`
+        document.querySelector('.prev_reviews').innerHTML += template;
+    };
+}
+
+const get_reviews = async (product_url) =>{
+    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?Where=product_url%3D\'' +product_url.replace(/\//g, "%2f"), {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+      const content = await rawResponse.json();
+      console.log(content);
+      return content
+}
 
 const parse_rating_info = (ratingInfo) => {
     let str = "<div>Rating details: "; 
@@ -121,11 +150,12 @@ const parse_rating_info = (ratingInfo) => {
 const parse_related_products = (relatedProducts) => {
     let str = "<div>Related Products: "; 
     for(product of relatedProducts){
-       str += `
-         <div>
-           <img src="${product.img}">
-         </div>
-         <div>${product.name}</div>`;
+       str += `<div product_url="${product.url}">
+            <div>
+            <img src="${product.img}">
+            </div>
+            <div>${product.name}</div>
+         </div>`;
     }
     str += "</div>";
     return str; 
@@ -253,6 +283,7 @@ const get_product_info = async (prod_url) => {
     let img = parse_product_img(productPageHTML);
     let parent_companies = parse_product_parent_companies(productPageHTML);
     let product_info = {
+        "product_url": prod_url,
         "name": name, // string
         "img": img, // url to image 
         "rating": rating, // number
@@ -298,3 +329,40 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 };
+
+document.querySelector('#rate').onclick = async () => {
+    name = document.querySelector('#name1').value;
+    rating = document.querySelector('#rating').value;
+    review_text = document.querySelector('#review').value;
+    recommend = document.querySelector('#recommend').value;
+    product_url = document.querySelector('#modal_overall').getAttribute("product_url");
+    console.log(document.querySelector('#modal_overall'));
+    // product_url = product.product_url
+    let product_info = {
+        "name": name,
+        "rating": rating,
+        "review_text": review_text,
+        "recommend": recommend,
+        "product_url": product_url
+    };
+    console.log(product_info);
+    send_to_db(product_info);
+};
+
+const send_to_db = async (product_info) => {
+    console.log(JSON.stringify(product_info));
+    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(product_info)
+      });
+      const content = await rawResponse.json();
+      console.log(content);
+      get_reviews(product_info.product_url)
+                .then((data) => {
+                    display_reviews(data);
+                });
+}
