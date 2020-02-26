@@ -730,7 +730,7 @@ a {
     }
 }
 
-.stars-outer {
+/* .stars-outer {
     display: inline-block;
     position: relative;
     font-family: FontAwesome;
@@ -753,6 +753,64 @@ a {
   .stars-inner::before {
     content: "\f005 \f005 \f005 \f005 \f005";
     color: #f8ce0b;
+  } */
+
+  /* .wtrButtonContainer .ratingStars .stars {
+    color: #aaa;
+    overflow: hidden;
+    width: 75px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stars {
+    color: #aaa;
+    width: 75px;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.wtrButtonContainer .ratingStars {
+    text-align: center;
+}
+
+.wtrButtonContainer .wtrRating {
+    clear: both;
+    color: #f2f2f2;
+    font-size: 85%;
+} */
+
+.fa-star:before {
+    content: "\f005";
+}
+
+.rating-list li i.yellow {
+    color: #FFD700;
+}
+
+.rating-list li i.gray {
+    color: #bbb;
+}
+
+.list-inline>li {
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.rating-list li {
+    padding: 0px;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+
   }
 
 .pwrap {
@@ -781,3 +839,4 @@ a {
 }
 
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
