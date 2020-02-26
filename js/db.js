@@ -88,6 +88,7 @@ const load_results = (products) => {
             console.log(event.currentTarget.getAttribute("class"));
             url = event.currentTarget.getAttribute("product-url");
             let product_info = await get_product_info(url);
+            console.log(url);
             console.log(product_info);
             // Make product page with the product_info
             document.querySelector(".modal-body").innerHTML = 
@@ -113,8 +114,11 @@ const load_results = (products) => {
 
 const display_reviews = (reviews) =>{
     document.querySelector(".prev_reviews").innerHTML = '<h2>Previous Reviews</h2>';
+    if (reviews.length == 0){
+        document.querySelector('.prev_reviews').innerHTML += '<div>No reviews yet</div>';
+    }
     for (review of reviews) {
-        const template = `<section class="review-card" id="${review.product_url}" product-url="${product.url}">
+        const template = `<section class="review-card" id="${review.product_url}" product-url="${review.product_url}">
             <div class="name">${review.name} rated it ${review.rating}</div>
             <div class="review_text">${review.review_text}</div>
             <div class="recommended">Would recommend? ${review.recommend}</div>
@@ -124,7 +128,7 @@ const display_reviews = (reviews) =>{
 }
 
 const get_reviews = async (product_url) =>{
-    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?Where=product_url%3D\'' +product_url.replace(/\//g, "%2f"), {
+    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?where=product_url%3D\'' +product_url.replace(/\//g, "%2f"), {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
