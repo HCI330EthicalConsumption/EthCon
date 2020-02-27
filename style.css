@@ -305,7 +305,7 @@ i {
     position: fixed;
     z-index: 10;
     max-width: 100%;
-    background: white;
+    background: #fff;
     -webkit-box-shadow: 0 2px 8px #f0f1f2;
     box-shadow: 0 2px 8px #f0f1f2;
     top: 0%;
