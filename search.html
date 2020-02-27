@@ -56,11 +56,13 @@
           <section class="review-card"></section>
         </div>
         <form class="review_form">
-          <label for="name1">Name</label><br>
-          <input type="text" id="name1" name="name1" placeholder="Enter your name"><br>
+          <label for="name1" >Name</label><br>
+          <input type="text" id="name1" name="name1" placeholder="Enter your name" required/><br>
+          <label for="email">Email</label><br>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required/><br>
           <label for="rating">Rating</label><br>
           <!-- <input type="text" id="rating" name="rating" placeholder="0"><br> -->
-          <ul class="list-inline rating-list" id="rating" name="rating">
+          <ul class="list-inline rating-list" id="rating" name="rating" required/>
             <li><i class="fa fa-star gray" id="star1"></i></li>
             <li><i class="fa fa-star gray" id="star2"></i></li>
             <li><i class="fa fa-star gray" id="star3"></i></li>
@@ -68,7 +70,7 @@
             <li><i class="fa fa-star gray" id="star5"></i></li>
         </ul>
           <label for="review_text">Write a review</label><br>
-          <input type="text" id="review" name="review" placeholder="Write a review"><br><br>
+          <input type="text" id="review" name="review" placeholder="Write a review" required/><br><br>
           <label for="recommend">Would you recommend this product?</label>
           <input type="radio" id="recommend" name="recommend" value="Yes">
           <label for="recommend">Yes</label><br>
