@@ -10,21 +10,22 @@
 <body>
   <header id="header" class="header">
     <div id="name_div">
-      <a href="./index.html">
+      <a id="home-button">
         <h1 id="name">Buy Better</h1>
       </a>
     </div>
     <div class="wrap">
       <div class="search"></div>
       <input id="search-terms" class="search-terms" type="text" placeholder="Enter a search term">
+      <select name="sortby" id="sortby" class="select-css">
+        <option value="rating">Rating</option>
+        <option value="relevance">Relevance</option>
+      </select>
       <button type="submit" class="go" id="go">
         <!-- <Icon type="search" theme="filled"/> -->
         <i class="fas fa-search"></i>
       </button>
-      <select name="sortby" id="sortby" class="select-css">
-        <option value="relevance">Relevance</option>
-        <option value="rating">Rating</option>
-      </select>
+      
     </div>
     </div>
   </header>
@@ -32,21 +33,22 @@
 
 
   <section id="product-section">
-      <div id="navigation">
+    <div id="navigation">
 
-      </div>
+    </div>
          <h1 id="results"> Searching... </h1>
          <section id="products">
 
            </section>
-      </section>
+      
+  </section>
   <p data-boi="hello">
   </p>
 
   <!-- The Modal -->
   <div id="myModal" class="modal">
 
-  <!-- Modal content -->
+    <!-- Modal content -->
     <div class="modal-content">
       <span class="close">&times;</span>
       <div class="modal-body"></div>
@@ -59,18 +61,18 @@
           <label for="name1" >Name</label><br>
           <input type="text" id="name1" name="name1" placeholder="Enter your name" required/><br>
           <label for="email">Email</label><br>
-          <input type="email" id="email" name="email" placeholder="Enter your email" required/><br>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required /><br>
           <label for="rating">Rating</label><br>
           <!-- <input type="text" id="rating" name="rating" placeholder="0"><br> -->
-          <ul class="list-inline rating-list" id="rating" name="rating" required/>
-            <li><i class="fa fa-star gray" id="star1"></i></li>
-            <li><i class="fa fa-star gray" id="star2"></i></li>
-            <li><i class="fa fa-star gray" id="star3"></i></li>
-            <li><i class="fa fa-star gray" id="star4"></i></li>
-            <li><i class="fa fa-star gray" id="star5"></i></li>
-        </ul>
+          <ul class="list-inline rating-list" id="rating" name="rating" required />
+          <li><i class="fa fa-star gray" id="star1"></i></li>
+          <li><i class="fa fa-star gray" id="star2"></i></li>
+          <li><i class="fa fa-star gray" id="star3"></i></li>
+          <li><i class="fa fa-star gray" id="star4"></i></li>
+          <li><i class="fa fa-star gray" id="star5"></i></li>
+          </ul>
           <label for="review_text">Write a review</label><br>
-          <input type="text" id="review" name="review" placeholder="Write a review" required/><br><br>
+          <input type="text" id="review" name="review" placeholder="Write a review" required /><br><br>
           <label for="recommend">Would you recommend this product?</label>
           <input type="radio" id="recommend" name="recommend" value="Yes">
           <label for="recommend">Yes</label><br>
@@ -106,9 +108,9 @@
           <li><i class="fa fa-star gray"></i></li>
       </ul> -->
       </div>
-      <button type="submit" class="add" id="add">Add to Shopping List</button>
+      <button type="submit" class="add" id="add_to_shopping_list">Add to Shopping List</button>
     </div>
-   </div>
+  </div>
 
 
   <script type="text/javascript" src="js/db.js"></script>
