@@ -123,25 +123,10 @@ let USER_INFO = {
 const open_search_page = () => {
     console.log("asdf");
     document.querySelector("body").innerHTML = searchHTMLbody;
-
-    let css = document.createElement("link");
-    css.rel = "stylesheet";
-    css.href = "css/style.css";
-    document.querySelector("head").appendChild(css);
-    let jqueryscript = document.createElement("script");
-    jqueryscript.charset = "utf-8";
-    jqueryscript.src = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js";
-    document.querySelector("body").appendChild(jqueryscript);
-
     let script = document.createElement("script");
     script.type = "text/javascript";
     script.src = "./js/search.js";
     document.querySelector("body").appendChild(script);
-
-    let fontawesome = document.createElement("script");
-    fontawesome.type = "text/javascript";
-    fontawesome.src = "https://kit.fontawesome.com/62a7c74d0d.js";
-    document.querySelector("body").appendChild(fontawesome);
 }
 
 // Gets the user information based on his/her username. objectId is what is used in future requests to update the shopping list, otherwise PUT doesn't work.
@@ -626,26 +611,10 @@ function resetRatingStars() {
 
 const open_home_page = () => {
     document.querySelector("body").innerHTML = homeHTMLbody;
-
-    let css = document.createElement("link");
-    css.rel = "stylesheet";
-    css.href = "css/style.css";
-    document.querySelector("head").appendChild(css);
-
-    let jqueryscript = document.createElement("script");
-    jqueryscript.charset = "utf-8";
-    jqueryscript.src = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js";
-    document.querySelector("body").appendChild(jqueryscript);
-
     let script = document.createElement("script");
     script.type = "text/javascript";
     script.src = "./js/home.js";
     document.querySelector("body").appendChild(script);
-
-    let fontawesome = document.createElement("script");
-    fontawesome.type = "text/javascript";
-    fontawesome.src = "https://kit.fontawesome.com/62a7c74d0d.js";
-    document.querySelector("body").appendChild(fontawesome);
 }
 
 
