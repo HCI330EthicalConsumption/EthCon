@@ -1,7 +1,7 @@
 const searchHTMLbody = `
 <header id="header" class="header">
 <div id="name_div">
-  <a href="./index.html">
+  <a id="home-button">
     <h1 id="name">Buy Better</h1>
   </a>
 </div>
@@ -110,7 +110,7 @@ let USER_INFO = {
     "shoppinglist": "[]"
 };
 
-const load_search_page = () => {
+const open_search_page = () => {
     console.log("asdf");
     document.querySelector("body").innerHTML = searchHTMLbody;
 
@@ -190,11 +190,12 @@ const make_user = (username) => {
         }
 
     });
-}
 
+}
 document.querySelector("#sign-in").onclick = () => {
     get_user_info_from_username("jacksonschuster2021@u.northwestern.edu");
-    make_user("newUserUntilThisIsExecutedOnce");
+    // make_user("newUserUntilThisIsExecutedOnce");
 }
 
-document.querySelector("#home-search-button").onclick = load_search_page;
+document.querySelector("#home-search-button").onclick = open_search_page;
+}

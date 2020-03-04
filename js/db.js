@@ -520,3 +520,35 @@ document.querySelector('#star5').onclick = async () => {
 }
 
 star_elements.click(changeRatingStars);
+
+const open_home_page = () => {
+    document.querySelector("body").innerHTML = `<ul id="shopping-list">
+    <li>
+      Search or scan to add items
+    </li>
+  </ul>
+  <a href="#"><button id="home-search-button">Search</button></a>
+  <button id="sign-in">Sign in</button>`;
+
+    // let css = document.createElement("link");
+    // css.rel = "stylesheet";
+    // css.href = "css/style.css";
+    // document.querySelector("head").appendChild(css);
+
+    // let jqueryscript = document.createElement("script");
+    // jqueryscript.charset = "utf-8";
+    // jqueryscript.src = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js";
+    // document.querySelector("body").appendChild(jqueryscript);
+
+    // let script = document.createElement("script");
+    // script.type = "text/javascript";
+    // script.src = "./js/home.js";
+    // document.querySelector("body").appendChild(script);
+
+    // let fontawesome = document.createElement("script");
+    // fontawesome.type = "text/javascript";
+    // fontawesome.src = "https://kit.fontawesome.com/62a7c74d0d.js";
+    // document.querySelector("body").appendChild(fontawesome);
+}
+
+document.querySelector("#home-button").onclick = open_home_page;
