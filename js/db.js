@@ -5,6 +5,13 @@ let numberOfPages = 0;
 let currentPage = 1;
 let productList = null;
 
+// let USER_INFO = {
+//     "username": "jacksonschuster2021@u.northwestern.edu",
+//     "objectId": "3ABD5069-12A1-7649-FF96-DF3A788E6E00",
+//     "shoppinglistlist": ["/products/272019-robathol-bath-oil-16oz"],
+//     "shoppinglist": ""
+// };
+
 const get = async (url) => {
     console.log(url);
     const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
@@ -122,6 +129,7 @@ const load_results = (products) => {
             console.log(event.currentTarget.getAttribute("class"));
             url = event.currentTarget.getAttribute("product-url");
             let product_info = await get_product_info(url);
+            document.querySelector("#add_to_shopping_list").setAttribute("prod-url", product_info['product_url']);
             console.log(url);
             console.log(product_info);
             // Make product page with the product_info
@@ -170,7 +178,7 @@ const display_reviews = (reviews) => {
 }
 
 const get_reviews = async (product_url) => {
-    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?where=product_url%3D\'' + product_url.replace(/\//g, "%2F") + "'", {
+    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?where=product_url%3D\'' + product_url.replace('/\//g', "%2F") + "'", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -382,6 +390,37 @@ window.onclick = function (event) {
     }
 };
 
+const get_user_info_from_email = (email) => {
+    fetch("https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles?where=username%3D'" + email.replace("@", "%40") + "'").then((resp) => {
+        return resp.json();
+    }).then((data) => {
+        USER_INFO['shoppinglistlist'] = JSON.parse(data['shoppinglist']);
+        USER_INFO['shoppinglist'] = data['shoppinglist'];
+        USER_INFO['objectId'] = data['objectId'];
+    })
+}
+
+const add_to_shopping_list = (event) => {
+    prod_url = event.currentTarget.getAttribute("prod-url");
+    USER_INFO['shoppinglistlist'].push(prod_url);
+    USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
+    console.log(USER_INFO['shoppinglist']);
+    fetch("https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles/" + USER_INFO["objectId"], {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(USER_INFO)
+    }).then((resp) => {
+        return resp.json();
+    }).then((data) => {
+        data['shoppinglist'] = JSON.parse(data['shoppinglist'])
+        console.log(data);
+    })
+}
+document.querySelector("#add_to_shopping_list").onclick = add_to_shopping_list;
+
 document.querySelector('#rate').onclick = async () => {
     name = document.querySelector('#name1').value;
     rating = document.querySelector('#rating').value;
@@ -477,7 +516,7 @@ document.querySelector('#star4').onclick = async () => {
 }
 
 document.querySelector('#star5').onclick = async () => {
-    document.querySelector('#rating').value =5;
+    document.querySelector('#rating').value = 5;
 }
 
 star_elements.click(changeRatingStars);
