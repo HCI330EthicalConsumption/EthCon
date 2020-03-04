@@ -20,7 +20,6 @@ document.querySelector("#sortby").onchange = async () => {
     if (document.getElementById("search-terms").value != "") {
         search_and_load();
     }
-
 };
 
 var modal = document.getElementById("myModal");

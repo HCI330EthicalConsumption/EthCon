@@ -135,7 +135,7 @@ const open_search_page = () => {
 
     let script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = "./js/db.js";
+    script.src = "./js/search.js";
     document.querySelector("body").appendChild(script);
 
     let fontawesome = document.createElement("script");
@@ -556,6 +556,10 @@ const get_product_info = async (prod_url) => {
 
 const add_to_shopping_list = (event) => {
     prod_url = event.currentTarget.getAttribute("prod-url");
+    if (USER_INFO['shoppinglistlist'].indexOf(prod_url) >= 0) {
+        window.alert("You already have that item in your cart!");
+        return
+    }
     USER_INFO['shoppinglistlist'].push(prod_url);
     USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
     console.log(USER_INFO['shoppinglist']);
