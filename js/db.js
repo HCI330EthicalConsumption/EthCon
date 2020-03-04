@@ -46,7 +46,7 @@ const search_products = async () => {
     console.log(sortby);
     search_terms = document.getElementById("search-terms").value;
     data = await search_gg(search_terms, sortby, 1);
-    numberOfPages = Math.ceil(data.length/numberPerPage);
+    numberOfPages = Math.ceil(data.length / numberPerPage);
     productList = data;
     generatePaginationHtml(numberOfPages, 1);
     return data;
@@ -67,13 +67,13 @@ const search_on_enter = (event) => {
 function generatePaginationHtml(totalCount, currentPage) {
     let template = `
     <div class="pwrap">`;
-    for (let i =1; i <= totalCount; i++) {
-      template += `
+    for (let i = 1; i <= totalCount; i++) {
+        template += `
         <div class = "pagination"><a "`;
-      if(currentPage == i) {
-        template += `class="active" `;
-      }
-      template += `href="#" onclick="loadPage(` + i + `)">` + i + `</a></div>`;
+        if (currentPage == i) {
+            template += `class="active" `;
+        }
+        template += `href="#" onclick="loadPage(` + i + `)">` + i + `</a></div>`;
     }
     template += `
         </div>`;
@@ -126,20 +126,20 @@ const load_results = (products) => {
             console.log(product_info);
             // Make product page with the product_info
             document.querySelector(".modal-body").innerHTML =
-              `<div id="modal_overall" product_url="${product_info.product_url}">${product_info.name}</div>
+                `<div id="modal_overall" product_url="${product_info.product_url}">${product_info.name}</div>
                <div class="modal-img">
                  <img src="${product_info.img}">
               </div>
               <div>Parent Company: ${product_info.parent_companies[0]}</div>
               <div>Ethical Responsibility: ${product_info.rating}</div>`;
-              document.querySelector(".modal-body").innerHTML += parse_rating_info(product_info.rating_info);
-              document.querySelector(".modal-body").innerHTML += `<div>About the Product: ${product_info.about}</div>`;
-              document.querySelector(".modal-body").innerHTML += parse_related_products(product_info.related_products);
-              get_reviews(product_info.product_url)
+            document.querySelector(".modal-body").innerHTML += parse_rating_info(product_info.rating_info);
+            document.querySelector(".modal-body").innerHTML += `<div>About the Product: ${product_info.about}</div>`;
+            document.querySelector(".modal-body").innerHTML += parse_related_products(product_info.related_products);
+            get_reviews(product_info.product_url)
                 .then((data) => {
                     display_reviews(data);
                 });
-	    var modal = document.getElementById("myModal");
+            var modal = document.getElementById("myModal");
             modal.style.display = "block";
 
         }
@@ -153,9 +153,9 @@ function check() {
     document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
 };
 
-const display_reviews = (reviews) =>{
+const display_reviews = (reviews) => {
     document.querySelector(".prev_reviews").innerHTML = '<h2>Previous Reviews</h2>';
-    if (reviews.length == 0){
+    if (reviews.length == 0) {
         document.querySelector('.prev_reviews').innerHTML += '<div>No reviews yet</div>';
     }
     for (review of reviews) {
@@ -168,23 +168,23 @@ const display_reviews = (reviews) =>{
     };
 }
 
-const get_reviews = async (product_url) =>{
-    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?where=product_url%3D\'' +product_url.replace(/\//g, "%2F") + "'", {
+const get_reviews = async (product_url) => {
+    const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews?where=product_url%3D\'' + product_url.replace(/\//g, "%2F") + "'", {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
-      });
-      const content = await rawResponse.json();
-      console.log(content);
-      return content
+    });
+    const content = await rawResponse.json();
+    console.log(content);
+    return content
 }
 
 const parse_rating_info = (ratingInfo) => {
     let str = "<div>Rating details: ";
-    for(info of ratingInfo){
-       str += `
+    for (info of ratingInfo) {
+        str += `
          <div>${info.criterion}</div>
          <div>${info.rating}</div>`;
     }
@@ -194,8 +194,8 @@ const parse_rating_info = (ratingInfo) => {
 
 const parse_related_products = (relatedProducts) => {
     let str = "<div>Related Products: ";
-    for(product of relatedProducts){
-       str += `<div product_url="${product.url}">
+    for (product of relatedProducts) {
+        str += `<div product_url="${product.url}">
             <div>
             <img src="${product.img}">
             </div>
@@ -209,9 +209,9 @@ const parse_related_products = (relatedProducts) => {
 const search_and_load = () => {
     search_terms = document.getElementById("search-terms").value;
     console.log(search_terms);
-    if(search_terms == ""){
-      alert("Please enter valid search term");
-      return false;
+    if (search_terms == "") {
+        alert("Please enter valid search term");
+        return false;
     }
     document.getElementById("results").innerHTML = "Searching...";
     search_products()
@@ -371,14 +371,14 @@ document.querySelector("#sortby").onchange = async () => {
 
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-  modal.style.display = "none";
+span.onclick = function () {
+    modal.style.display = "none";
 };
 
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 };
 
 document.querySelector('#rate').onclick = async () => {
@@ -405,59 +405,55 @@ const send_to_db = async (product_info) => {
     const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(product_info)
-      });
-      const content = await rawResponse.json();
-      console.log(content);
-      get_reviews(product_info.product_url)
-                .then((data) => {
-                    display_reviews(data);
-                });
+    });
+    const content = await rawResponse.json();
+    console.log(content);
+    get_reviews(product_info.product_url)
+        .then((data) => {
+            display_reviews(data);
+        });
 }
 
 var current_star_statusses = [];
 
 star_elements = $('.fa-star');
 
-star_elements.each(function(i, elem)
-{
-   current_star_statusses.push($(elem).hasClass('yellow'));
+star_elements.each(function (i, elem) {
+    current_star_statusses.push($(elem).hasClass('yellow'));
 });
 
 star_elements.mouseenter(changeRatingStars);
 // star_elements.mouseleave(resetRatingStars);
 
 /**
-* Changes the rating star colors when hovering over it.
-*/
-function changeRatingStars()
-{
-// Current star hovered
-var star = $(this);
+ * Changes the rating star colors when hovering over it.
+ */
+function changeRatingStars() {
+    // Current star hovered
+    var star = $(this);
 
-// Removes all colors first from all stars
-$('.fa-star').removeClass('gray').removeClass('yellow');
+    // Removes all colors first from all stars
+    $('.fa-star').removeClass('gray').removeClass('yellow');
 
-// Makes the current hovered star yellow
-star.addClass('yellow');
+    // Makes the current hovered star yellow
+    star.addClass('yellow');
 
-// Makes the previous stars yellow and the next stars gray
-star.parent().prevAll().children('.fa-star').addClass('yellow');
-star.parent().nextAll().children('.fa-star').addClass('gray');
+    // Makes the previous stars yellow and the next stars gray
+    star.parent().prevAll().children('.fa-star').addClass('yellow');
+    star.parent().nextAll().children('.fa-star').addClass('gray');
 }
 
 /**
-* Resets the rating star colors when not hovered anymore.
-*/
-function resetRatingStars()
-{
-star_elements.each(function(i, elem)
-                 {
-$(elem).removeClass('yellow').removeClass('gray').addClass(current_star_statusses[i] ? 'yellow' : 'gray');
-});
+ * Resets the rating star colors when not hovered anymore.
+ */
+function resetRatingStars() {
+    star_elements.each(function (i, elem) {
+        $(elem).removeClass('yellow').removeClass('gray').addClass(current_star_statusses[i] ? 'yellow' : 'gray');
+    });
 }
 
 document.querySelector('#star1').onclick = async () => {
@@ -465,18 +461,17 @@ document.querySelector('#star1').onclick = async () => {
 }
 
 document.querySelector('#star2').onclick = async () => {
-    document.querySelector('#rating').value =2;
+    document.querySelector('#rating').value = 2;
 }
 
 document.querySelector('#star3').onclick = async () => {
-    document.querySelector('#rating').value =3;
+    document.querySelector('#rating').value = 3;
 }
 
 document.querySelector('#star4').onclick = async () => {
-    document.querySelector('#rating').value =4;
+    document.querySelector('#rating').value = 4;
 }
 
 document.querySelector('#star5').onclick = async () => {
-    document.querySelector('#rating').value =5;
+    document.querySelector('#rating').value = 5;
 }
-

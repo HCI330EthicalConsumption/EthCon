@@ -20,6 +20,7 @@ h1 {
 }
 
 
+
 /* ***********************************************************
    LAYOUTS
    *********************************************************** */
@@ -157,12 +158,12 @@ main {
     padding-left: 2px;
 }
 
-.modal-body{
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
         'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
         'Segoe UI Emoji', 'Segoe UI Symbol';
 }
@@ -591,42 +592,50 @@ body {
 
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
-       'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-       'Segoe UI Emoji', 'Segoe UI Symbol';
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 .modal .review-card {
-  line-height: 20px;
+    line-height: 20px;
 }
 
 .modal .name {
-  font-size: 20px;
-  font-weight: 500;
-  text-transform: capitalize;
-  line-height: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    text-transform: capitalize;
+    line-height: 20px;
 }
 
 .modal .recommended {
-  font-weight: 400;
-  margin-bottom: 50px;
+    font-weight: 400;
+    margin-bottom: 50px;
 }
 
 .review_form {
-  margin-top: 50px;
-  line-height: 25px;
-  font-size: 18px;
-  font-weight: 500;
+    margin-top: 50px;
+    line-height: 25px;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .modal-content .rate {
@@ -650,26 +659,28 @@ body {
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button */
 .close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /*
@@ -800,7 +811,7 @@ a {
     color: #f8ce0b;
   } */
 
-  /* .wtrButtonContainer .ratingStars .stars {
+/* .wtrButtonContainer .ratingStars .stars {
     color: #aaa;
     overflow: hidden;
     width: 75px;
@@ -846,6 +857,7 @@ a {
 .rating-list li {
     padding: 0px;
 }
+
 .fa {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
@@ -856,31 +868,32 @@ a {
     transform: translate(0, 0);
 }
 
-  }
 
 .pwrap {
-    man-width:400px;
-    margin:auto;
-    margin-top:40px;
+    max-width: 400px;
+    margin: auto;
+    margin-top: 40px;
 }
 
 .pagination {
-  display: inline-block;
+    display: inline-block;
 }
 
 .pagination a {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
-      'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-      'Segoe UI Emoji', 'Segoe UI Symbol';
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol';
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
 }
 
 .pagination a.active {
-  background-color: orange;
-  color: white;
+    background-color: orange;
+    color: white;
 }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
