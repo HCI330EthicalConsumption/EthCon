@@ -141,7 +141,8 @@ const load_results = (products) => {
                 });
 	    var modal = document.getElementById("myModal");
             modal.style.display = "block";
-
+            document.getElementById("review_form").reset();
+            resetRatingStars();
         }
     }
 };
@@ -398,7 +399,10 @@ document.querySelector('#rate').onclick = async () => {
     };
     console.log(product_info);
     send_to_db(product_info);
+    document.getElementById("review_form").reset();
+    resetRatingStars();
 };
+
 
 const send_to_db = async (product_info) => {
     console.log(JSON.stringify(product_info));
@@ -427,7 +431,7 @@ star_elements.each(function(i, elem)
    current_star_statusses.push($(elem).hasClass('yellow'));
 });
 
-star_elements.mouseenter(changeRatingStars);
+// star_elements.click(changeRatingStars);
 // star_elements.mouseleave(resetRatingStars);
 
 /**
@@ -480,3 +484,4 @@ document.querySelector('#star5').onclick = async () => {
     document.querySelector('#rating').value =5;
 }
 
+star_elements.click(changeRatingStars);
