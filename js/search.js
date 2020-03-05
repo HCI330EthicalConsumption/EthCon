@@ -181,3 +181,7 @@ window.onclick = function (event) {
 };
 
 star_elements.click(changeRatingStars);
+
+// document.onload = () => {
+//     document.querySelector('body').style.background = 'rgba(0,0,0,.6)';
+// };
