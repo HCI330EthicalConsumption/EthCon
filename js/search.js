@@ -36,6 +36,41 @@ window.onclick = function (event) {
 
 document.querySelector("#add_to_shopping_list").onclick = add_to_shopping_list;
 
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function () {
+    modal.style.display = "none";
+};
+
+document.querySelector('#rate').onclick = async () => {
+    name = document.querySelector('#name1').value;
+    rating = document.querySelector('#rating').value;
+    review_text = document.querySelector('#review').value;
+    recommend = document.querySelector('#recommend').value;
+    product_url = document.querySelector('#modal_overall').getAttribute("product_url");
+    email = document.querySelector('#email').value;
+    console.log(document.querySelector('#modal_overall'));
+    // product_url = product.product_url
+    let product_info = {
+        "name": name,
+        "rating": rating,
+        "review_text": review_text,
+        "recommend": recommend,
+        "product_url": product_url,
+        "email": email
+    };
+    var correct = validateForm(product_info);
+    if (correct == true) {
+        console.log(product_info);
+        send_to_db(product_info);
+        // document.getElementsByClassName('.button').href = "#popup";
+        // document.getElementsByClassName('.overlay').visibility = "visible";
+        document.getElementById("review_form").reset();
+        resetRatingStars();
+        alert("Your review has been submitted!");
+    }
+};
+
 document.querySelector('#rate').onclick = async () => {
     name = document.querySelector('#name1').value;
     rating = document.querySelector('#rating').value;
@@ -54,7 +89,7 @@ document.querySelector('#rate').onclick = async () => {
         "email": email
     };
     var correct = validateForm(product_info);
-    if (correct == true){
+    if (correct == true) {
         console.log(product_info);
         send_to_db(product_info);
         // document.getElementsByClassName('.button').href = "#popup";
@@ -76,20 +111,17 @@ function validateForm(product_info) {
         document.getElementsByClassName('.button').href = "#";
         // document.getElementsByClassName('.overlay').visibility = "hidden";
         return false;
-    }
-    else if (email == ""){
+    } else if (email == "") {
         alert("Email must be filled out");
         document.getElementsByClassName('.button').href = "#";
         // document.getElementsByClassName('.overlay').visibility = "hidden";
         return false;
-    }
-    else if (rating == undefined){
+    } else if (rating == undefined) {
         alert("Must submit a rating");
         document.getElementsByClassName('.button').href = "#";
         // document.getElementsByClassName('.overlay').visibility = "hidden";
         return false;
-    }
-    else if (recommend == "None"){
+    } else if (recommend == "None") {
         alert("Must choose whether to recommend");
         return false;
     }
@@ -134,10 +166,18 @@ star_elements.click(changeRatingStars);
 
 document.querySelector("#home-button").onclick = open_home_page;
 
-document.querySelector('#yes').onclick = async () =>{
+document.querySelector('#yes').onclick = async () => {
     recommend = document.querySelector('.recommend').value = 'Yes';
 }
 
-document.querySelector('#no').onclick = async () =>{
+document.querySelector('#no').onclick = async () => {
     recommend = document.querySelector('.recommend').value = 'No';
 }
+
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+};
+
+star_elements.click(changeRatingStars);

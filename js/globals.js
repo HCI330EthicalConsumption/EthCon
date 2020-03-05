@@ -1,6 +1,6 @@
 let searchHTMLbody = "";
 const fillSearchHTML = () => {
-    fetch("./search.html").then((resp) => {
+    fetch("./search.html", {mode: 'no-cors'}).then((resp) => {
         return resp.text();
     }).then((data) => {
         searchHTMLbody = data.match(/(?<=<body>\s*).*?(?=\s*<\/body>)/gs)[0];
@@ -11,7 +11,7 @@ fillSearchHTML();
 
 let homeHTMLbody = "";
 const fillHomeHTML = () => {
-    fetch("./index.html").then((resp) => {
+    fetch("./index.html", {mode: 'no-cors'}).then((resp) => {
         return resp.text();
     }).then((data) => {
         homeHTMLbody = data.match(/(?<=<body>\s*).*?(?=\s*<\/body>)/gs)[0];
@@ -196,7 +196,9 @@ const load_results = (products) => {
               <p>${product.brand.name}</p>
           </div>
           <div>
-            <p class="numberCircle${product.rating} numberCircle">${product.rating}</p>
+            <p class="numberCircle${product.rating} numberCircle">
+                ${product.rating}
+            </p>
           </div>
       </section>`
         document.querySelector('#products').innerHTML += template;
@@ -447,17 +449,40 @@ const get_product_info = async (prod_url) => {
 }
 
 const add_to_shopping_list = (event) => {
-    console.log('xxx');
-    console.log(event.currentTarget);
-    prod_url = event.currentTarget.getAttribute("prod-url");
-    if (USER_INFO['shoppinglistlist'].indexOf(prod_url) >= 0) {
-        window.alert("You already have that item in your cart!");
-        return
-    }
+    // let prod_url = event.currentTarget.getAttribute("prod-url");
     let product = {};
     product["name"] = event.currentTarget.getAttribute("name");
     product["img"] = event.currentTarget.getAttribute("img");
+    product["url"] = event.currentTarget.getAttribute("prod-url");
+    if (USER_INFO['shoppinglistlist'].indexOf(product) >= 0) {
+        window.alert("You already have that item in your cart!");
+        return
+    }
     USER_INFO['shoppinglistlist'].push(product);
+    // USER_INFO['shoppinglistlist'].push(prod_url);
+    // USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
+    console.log(USER_INFO['shoppinglist']);
+    update_shopping_list("added");
+    // fetch("https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles/" + USER_INFO["objectId"], {
+    //     method: 'PUT',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(USER_INFO)
+    // }).then((resp) => {
+    //     return resp.json();
+    // }).then((data) => {
+    //     data['shoppinglist'] = JSON.parse(data['shoppinglist'])
+    //     console.log(data);
+    // })
+}
+
+const update_shopping_list = (action) => {
+    if (USER_INFO.objectId == "") {
+        window.alert("You must be signed in to add to shopping cart!");
+        return;
+    }
     USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
     console.log(USER_INFO['shoppinglist']);
     console.log("list");
@@ -473,51 +498,22 @@ const add_to_shopping_list = (event) => {
         return resp.json();
     }).then((data) => {
         data['shoppinglist'] = JSON.parse(data['shoppinglist'])
+        window.alert("Item " + action + " from shopping list")
         console.log(data);
     })
 }
 
-
-var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-  modal.style.display = "none";
-};
-
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
-
-document.querySelector('#rate').onclick = async () => {
-    name = document.querySelector('#name1').value;
-    rating = document.querySelector('#rating').value;
-    review_text = document.querySelector('#review').value;
-    recommend = document.querySelector('#recommend').value;
-    product_url = document.querySelector('#modal_overall').getAttribute("product_url");
-    email = document.querySelector('#email').value;
-    console.log(document.querySelector('#modal_overall'));
-    // product_url = product.product_url
-    let product_info = {
-        "name": name,
-        "rating": rating,
-        "review_text": review_text,
-        "recommend": recommend,
-        "product_url": product_url,
-        "email": email
-    };
-    var correct = validateForm(product_info);
-    if (correct == true){
-        console.log(product_info);
-        send_to_db(product_info);
-        // document.getElementsByClassName('.button').href = "#popup";
-        // document.getElementsByClassName('.overlay').visibility = "visible";
-        document.getElementById("review_form").reset();
-        resetRatingStars();
-        alert("Your review has been submitted!");
+const remove_from_shopping_list = (event) => {
+    let product = {};
+    product["name"] = event.currentTarget.getAttribute("name");
+    product["img"] = event.currentTarget.getAttribute("img");
+    product["url"] = event.currentTarget.getAttribute("prod-url");
+    const index = USER_INFO.shoppinglistlist.indexOf(product);
+    if (index > -1) {
+        USER_INFO.shoppinglistlist.splice(index, 1);
     }
-};
+    update_shopping_list("removed");
+}
 
 
 function validateForm(product_info) {
@@ -633,4 +629,4 @@ const open_home_page = () => {
   document.querySelector('#my-shopping-list').innerHTML = template; 
 }
 
-star_elements.click(changeRatingStars);
+
