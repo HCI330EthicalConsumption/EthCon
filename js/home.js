@@ -4,3 +4,4 @@ document.querySelector("#sign-in").onclick = () => {
 }
 
 document.querySelector("#home-search-button").onclick = open_search_page;
+

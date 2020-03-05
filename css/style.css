@@ -51,6 +51,139 @@ main {
     color
 } */
 
+#list-name{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+}
+  
+#list-title{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+         'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+         'Segoe UI Emoji', 'Segoe UI Symbol';
+    font-size: 24px;
+    justify-content: center;
+    border-bottom: 3px solid rgba(19, 194, 194, .6);
+    margin-bottom: -35px;
+}
+
+#empty-list{
+    text-align: center;
+    font-size: 18px;
+}
+
+#empty-instructions{
+    text-align: center;
+    font-size: 18px;
+}
+
+#home-search-button{
+    width: 7%;
+    height: 31px;
+    border: 1px solid rgba(19, 194, 194, .6);
+    border-left: none;
+    background: rgba(19, 194, 194, .6);
+    text-align: center;
+    color: white;
+    border-radius: 5px 5px 5px 5px;
+    cursor: pointer;
+    font-size: 20px;
+    padding-top: 2px;
+    padding-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0;
+    margin-left: 57px;
+}
+
+.list-img{
+    max-height: 100px;
+    width: auto;
+    max-width: auto;
+    object-fit: contain;
+    position: relative;
+    overflow: hidden;
+}
+
+.list-prod{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+         'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+         'Segoe UI Emoji', 'Segoe UI Symbol';
+    font-size: 22px;
+    float: right;
+    width: 94%;
+    padding: 35px;
+}
+
+ol {
+    counter-reset: li; /* Initiate a counter */
+    list-style: none; /* Remove default numbering */
+    *list-style: decimal; /* Keep using default numbering for IE6/7 */
+    font: 15px 'trebuchet MS', 'lucida sans';
+    padding: 0;
+    margin-bottom: 4em;
+    margin-right: 20px;
+    margin-left: 20px;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+  
+.rectangle-list a{
+      position: relative;
+      display: block;
+      padding: .4em .4em .4em .8em;
+      *padding: .4em;
+      margin: .5em 0 .5em 2.5em;
+      background: white;
+      border: 3px solid rgba(19, 194, 194, .6);
+      border-radius: 5px;
+      color: #444;
+      text-decoration: none;
+      transition: all .3s ease-out;
+}
+  
+.rectangle-list a:hover{
+      border: 3px solid #12B1B1; 
+}
+  
+  .rectangle-list a:before{
+      content: counter(li);
+      counter-increment: li;
+      position: absolute;
+      left: -2.5em;
+      top: 50%;
+      margin-top: -1em;
+      background: #FC7753;
+      /*background: #F05D5E;*/
+      /*background: #fa8072;*/
+      height: 2em;
+      width: 2em;
+      line-height: 2em;
+      text-align: center;
+      font-weight: bold;
+}
+  
+.rectangle-list a:after{
+      position: absolute;
+      content: '';
+      border: .5em solid transparent;
+      left: -1em;
+      top: 50%;
+      margin-top: -.5em;
+      transition: all .3s ease-out;
+}
+  
+.rectangle-list a:hover:after{
+      left: -.5em;
+      border-left-color: #FC7753;
+}
+
+#sign-in-div{
+    margin-right: 5px;
+    margin-top: 10px;
+    float: right; 
+}
+  
 #results {
     /* text-decoration: underline rgba(19, 194, 194,.6);  */
     border-bottom: 3px solid rgba(19, 194, 194, .6);
@@ -242,6 +375,7 @@ main {
     padding-left: 0;
     padding-right: 0;
     margin: 0;
+    margin-top: 10px;
 }
 
 i {
@@ -327,6 +461,10 @@ i {
     border-bottom: none;
 
 } */
+
+#name_div{
+    float: left;
+}
 
 #name {
     padding-left: .8em;
@@ -681,6 +819,11 @@ body {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+#modal_overall{
+    font-size: 22px;
+    font-weight: bold;
 }
 
 /*
