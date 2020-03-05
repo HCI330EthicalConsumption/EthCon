@@ -112,7 +112,7 @@ main {
          'Segoe UI Emoji', 'Segoe UI Symbol';
     font-size: 22px;
     float: right;
-    width: 94%;
+    width: auto;
     padding: 35px;
 }
 
