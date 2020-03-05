@@ -450,14 +450,14 @@ const get_product_info = async (prod_url) => {
 
 const add_to_shopping_list = (event) => {
     // let prod_url = event.currentTarget.getAttribute("prod-url");
-    if (USER_INFO['shoppinglistlist'].indexOf(prod_url) >= 0) {
-        window.alert("You already have that item in your cart!");
-        return
-    }
     let product = {};
     product["name"] = event.currentTarget.getAttribute("name");
     product["img"] = event.currentTarget.getAttribute("img");
     product["url"] = event.currentTarget.getAttribute("prod-url");
+    if (USER_INFO['shoppinglistlist'].indexOf(product) >= 0) {
+        window.alert("You already have that item in your cart!");
+        return
+    }
     USER_INFO['shoppinglistlist'].push(product);
     // USER_INFO['shoppinglistlist'].push(prod_url);
     // USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
@@ -514,47 +514,6 @@ const remove_from_shopping_list = (event) => {
     }
     update_shopping_list("removed");
 }
-
-var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-  modal.style.display = "none";
-};
-
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
-
-document.querySelector('#rate').onclick = async () => {
-    name = document.querySelector('#name1').value;
-    rating = document.querySelector('#rating').value;
-    review_text = document.querySelector('#review').value;
-    recommend = document.querySelector('#recommend').value;
-    product_url = document.querySelector('#modal_overall').getAttribute("product_url");
-    email = document.querySelector('#email').value;
-    console.log(document.querySelector('#modal_overall'));
-    // product_url = product.product_url
-    let product_info = {
-        "name": name,
-        "rating": rating,
-        "review_text": review_text,
-        "recommend": recommend,
-        "product_url": product_url,
-        "email": email
-    };
-    var correct = validateForm(product_info);
-    if (correct == true){
-        console.log(product_info);
-        send_to_db(product_info);
-        // document.getElementsByClassName('.button').href = "#popup";
-        // document.getElementsByClassName('.overlay').visibility = "visible";
-        document.getElementById("review_form").reset();
-        resetRatingStars();
-        alert("Your review has been submitted!");
-    }
-};
 
 
 function validateForm(product_info) {
@@ -670,4 +629,4 @@ const open_home_page = () => {
   document.querySelector('#my-shopping-list').innerHTML = template; 
 }
 
-star_elements.click(changeRatingStars);
+
