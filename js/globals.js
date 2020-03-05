@@ -90,8 +90,12 @@ const make_user = (username) => {
             return false
         }
     }).then((data) => {
+        console.log(data);
+        if (data == false) {
+            return false;
+        }
         try {
-            data = data[0]
+            // data = data[0]
             USER_INFO.objectId = data.objectId;
             console.log(data);
             return true;
