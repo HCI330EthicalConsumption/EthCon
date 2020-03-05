@@ -20,13 +20,28 @@
 </head>
 
 <body>
-  <ul id="shopping-list">
-    <li>
-      Search or scan to add items
-    </li>
-  </ul>
-  <a href="#"><button id="home-search-button">Search</button></a>
-  <button id="sign-in">Sign in</button>
+  <header id="header" class="header">
+    <div>
+      <div id="name_div">
+        <a id="home-button">
+          <h1 id="name">Buy Better</h1>
+        </a>
+      </div>
+      <div id="sign-in-div">
+        <button id="sign-in">Sign in</button>
+      </div>
+    </div>
+  </header>
+  <br><br><br>
+  <div id = "list-name">
+    <p id="list-title">My Shopping List</p>
+  </div>
+  <br></br>
+  <a href="#"><button id="home-search-button"><i class="fas fa-plus"></i> Search</button></a>
+  <section id="my-shopping-list">
+    <p id="empty-list">Your shopping list is empty :(.</p>
+    <p id="empty-instructions">Search for a product to add items to list.</p>
+  </section>
   <script id="homescript" type="text/javascript" src="js/home.js"></script>
 </body>
 

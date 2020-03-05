@@ -7,7 +7,7 @@ const fillSearchHTML = () => {
         console.log("searchHTML loaded");
     })
 }
-fillSearchHTML();  
+fillSearchHTML();
 
 let homeHTMLbody = "";
 const fillHomeHTML = () => {
@@ -17,7 +17,7 @@ const fillHomeHTML = () => {
         homeHTMLbody = data.match(/(?<=<body>\s*).*?(?=\s*<\/body>)/gs)[0];
     })
 }
-fillHomeHTML(); 
+fillHomeHTML();
 
 let USER_INFO = {
     "username": "",
@@ -98,7 +98,7 @@ let productList = null;
 
 const get = async (url) => {
     console.log(url);
-    // const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
+    //const proxyurl = "https://cors-anywhere.herokuapp.com/"; // use for local work - limits requests per hour though
     const proxyurl = "https://jtschuster1.azurewebsites.net/"; // Web app that gives us unlimited requests - use for final push
     console.log(proxyurl + url);
     let data = await fetch(proxyurl + url);
@@ -216,6 +216,8 @@ const load_results = (products) => {
             url = event.currentTarget.getAttribute("product-url");
             let product_info = await get_product_info(url);
             document.querySelector("#add_to_shopping_list").setAttribute("prod-url", product_info['product_url']);
+            document.querySelector("#add_to_shopping_list").setAttribute("name", product_info['name']);
+            document.querySelector("#add_to_shopping_list").setAttribute("img", product_info['img']);
             console.log(url);
             console.log(product_info);
             // Make product page with the product_info
@@ -228,7 +230,7 @@ const load_results = (products) => {
               <div>Ethical Responsibility: ${product_info.rating}</div>`;
             document.querySelector(".modal-body").innerHTML += parse_rating_info(product_info.rating_info);
             document.querySelector(".modal-body").innerHTML += `<div>About the Product: ${product_info.about}</div>`;
-            document.querySelector(".modal-body").innerHTML += parse_related_products(product_info.related_products);
+            /*document.querySelector(".modal-body").innerHTML += parse_related_products(product_info.related_products);*/
             get_reviews(product_info.product_url)
                 .then((data) => {
                     display_reviews(data);
@@ -445,14 +447,21 @@ const get_product_info = async (prod_url) => {
 }
 
 const add_to_shopping_list = (event) => {
+    console.log('xxx');
+    console.log(event.currentTarget);
     prod_url = event.currentTarget.getAttribute("prod-url");
     if (USER_INFO['shoppinglistlist'].indexOf(prod_url) >= 0) {
         window.alert("You already have that item in your cart!");
         return
     }
-    USER_INFO['shoppinglistlist'].push(prod_url);
+    let product = {};
+    product["name"] = event.currentTarget.getAttribute("name");
+    product["img"] = event.currentTarget.getAttribute("img");
+    USER_INFO['shoppinglistlist'].push(product);
     USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
     console.log(USER_INFO['shoppinglist']);
+    console.log("list");
+    console.log(USER_INFO['shoppinglistlist']);
     fetch("https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles/" + USER_INFO["objectId"], {
         method: 'PUT',
         headers: {
@@ -467,6 +476,32 @@ const add_to_shopping_list = (event) => {
         console.log(data);
     })
 }
+
+/*const get_shopping_list = () => {
+    document.querySelector('#my-shopping-list').innerHTML = "";
+    let template = `<div id = "list-name">
+    <p id="list-title">My Shopping List</p>
+    <div class="line"></div>
+  </div>
+  <div>
+    <a href="#"><button id="home-search-button">Search</button></a>
+  </div>
+  <br></br>`;
+  if(USER_INFO["shoppinglistlist"].length == 0){
+      template += `<div id="empty">Shopping list is empty.</div>`; 
+  }
+  else{
+      template += `
+      <ol class="rectangle-list" id="shopping-list">`;
+      for(product of USER_INFO["shoppinglistlist"]){
+          template += `
+          <li><a href="">${product["name"]}</a></li>`;
+      }
+      template += `
+      </ol>`;
+  }
+  document.querySelector('#my-shopping-list').innerHTML = template; 
+}*/
 
 const send_to_db = async (product_info) => {
     console.log(JSON.stringify(product_info));
@@ -520,6 +555,26 @@ const open_home_page = () => {
     script.type = "text/javascript";
     script.src = "./js/home.js";
     document.querySelector("body").appendChild(script);
+    document.querySelector('#my-shopping-list').innerHTML = "";
+    let template = '';
+    /*let template = `<div id = "list-name">
+    <p id="list-title">My Shopping List</p>
+    <div class="line"></div>
+  </div>
+  <br></br>`;*/
+  if(USER_INFO["shoppinglistlist"].length == 0){
+      template += `<p id="empty-list">Your shopping list is empty :(.</p>
+        <p id="empty-instructions">Search for a product to add items to list.</p>`; 
+  }
+  else{
+      template += `
+      <ol class="rectangle-list" id="shopping-list">`;
+      for(product of USER_INFO["shoppinglistlist"]){
+          template += `
+          <li id="list-item"><a href=""><img class="list-img" src="${product["img"]}"><div class="list-prod">${product["name"]}</div></a></li>`;
+      }
+      template += `
+      </ol>`;
+  }
+  document.querySelector('#my-shopping-list').innerHTML = template; 
 }
-
-
