@@ -1093,9 +1093,7 @@ a {
   .popup .content {
     max-height: 30%;
     overflow: auto;
-  }
-<<<<<<< HEAD
-  
+  }  
   	
   .signin {	
     display: flex;	
@@ -1158,5 +1156,4 @@ a {
     text-align: left;	
     padding-left: 1em;	
  }
-=======
->>>>>>> ca37aca750d6bb61f3454f13ef14e3c4b4e0094d
+
