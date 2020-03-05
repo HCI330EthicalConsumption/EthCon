@@ -40,8 +40,9 @@ document.querySelector('#rate').onclick = async () => {
     name = document.querySelector('#name1').value;
     rating = document.querySelector('#rating').value;
     review_text = document.querySelector('#review').value;
-    recommend = document.querySelector('#recommend').value;
+    recommend = document.querySelector('.recommend').value;
     product_url = document.querySelector('#modal_overall').getAttribute("product_url");
+    email = document.querySelector('#email').value;
     console.log(document.querySelector('#modal_overall'));
     // product_url = product.product_url
     let product_info = {
@@ -49,14 +50,51 @@ document.querySelector('#rate').onclick = async () => {
         "rating": rating,
         "review_text": review_text,
         "recommend": recommend,
-        "product_url": product_url
+        "product_url": product_url,
+        "email": email
     };
-    console.log(product_info);
-    send_to_db(product_info);
-    document.getElementById("review_form").reset();
-    resetRatingStars();
+    var correct = validateForm(product_info);
+    if (correct == true){
+        console.log(product_info);
+        send_to_db(product_info);
+        // document.getElementsByClassName('.button').href = "#popup";
+        // document.getElementsByClassName('.overlay').visibility = "visible";
+        document.getElementById("review_form").reset();
+        resetRatingStars();
+        window.alert("Your review has been submitted!");
+    }
 };
 
+function validateForm(product_info) {
+    var name = product_info["name"];
+    var email = product_info["email"];
+    var rating = product_info["rating"];
+    var recommend = product_info["recommend"];
+    // var a = document.forms["review_form"]["name1"].value;
+    if (name == "") {
+        alert("Name must be filled out");
+        document.getElementsByClassName('.button').href = "#";
+        // document.getElementsByClassName('.overlay').visibility = "hidden";
+        return false;
+    }
+    else if (email == ""){
+        alert("Email must be filled out");
+        document.getElementsByClassName('.button').href = "#";
+        // document.getElementsByClassName('.overlay').visibility = "hidden";
+        return false;
+    }
+    else if (rating == undefined){
+        alert("Must submit a rating");
+        document.getElementsByClassName('.button').href = "#";
+        // document.getElementsByClassName('.overlay').visibility = "hidden";
+        return false;
+    }
+    else if (recommend == "None"){
+        alert("Must choose whether to recommend");
+        return false;
+    }
+    return true;
+};
 
 
 
@@ -95,3 +133,11 @@ document.querySelector('#star5').onclick = async () => {
 star_elements.click(changeRatingStars);
 
 document.querySelector("#home-button").onclick = open_home_page;
+
+document.querySelector('#yes').onclick = async () =>{
+    recommend = document.querySelector('.recommend').value = 'Yes';
+}
+
+document.querySelector('#no').onclick = async () =>{
+    recommend = document.querySelector('.recommend').value = 'No';
+}

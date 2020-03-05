@@ -477,32 +477,86 @@ const add_to_shopping_list = (event) => {
     })
 }
 
-/*const get_shopping_list = () => {
-    document.querySelector('#my-shopping-list').innerHTML = "";
-    let template = `<div id = "list-name">
-    <p id="list-title">My Shopping List</p>
-    <div class="line"></div>
-  </div>
-  <div>
-    <a href="#"><button id="home-search-button">Search</button></a>
-  </div>
-  <br></br>`;
-  if(USER_INFO["shoppinglistlist"].length == 0){
-      template += `<div id="empty">Shopping list is empty.</div>`; 
-  }
-  else{
-      template += `
-      <ol class="rectangle-list" id="shopping-list">`;
-      for(product of USER_INFO["shoppinglistlist"]){
-          template += `
-          <li><a href="">${product["name"]}</a></li>`;
-      }
-      template += `
-      </ol>`;
-  }
-  document.querySelector('#my-shopping-list').innerHTML = template; 
-}*/
 
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+  modal.style.display = "none";
+};
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+document.querySelector('#rate').onclick = async () => {
+    name = document.querySelector('#name1').value;
+    rating = document.querySelector('#rating').value;
+    review_text = document.querySelector('#review').value;
+    recommend = document.querySelector('#recommend').value;
+    product_url = document.querySelector('#modal_overall').getAttribute("product_url");
+    email = document.querySelector('#email').value;
+    console.log(document.querySelector('#modal_overall'));
+    // product_url = product.product_url
+    let product_info = {
+        "name": name,
+        "rating": rating,
+        "review_text": review_text,
+        "recommend": recommend,
+        "product_url": product_url,
+        "email": email
+    };
+    var correct = validateForm(product_info);
+    if (correct == true){
+        console.log(product_info);
+        send_to_db(product_info);
+        // document.getElementsByClassName('.button').href = "#popup";
+        // document.getElementsByClassName('.overlay').visibility = "visible";
+        document.getElementById("review_form").reset();
+        resetRatingStars();
+        alert("Your review has been submitted!");
+    }
+};
+
+
+function validateForm(product_info) {
+    var name = product_info["name"];
+    var email = product_info["email"];
+    var rating = product_info["rating"];
+    var recommend = product_info["recommend"];
+    // var a = document.forms["review_form"]["name1"].value;
+    if (name == "") {
+        alert("Name must be filled out");
+        document.getElementsByClassName('.button').href = "#";
+        // document.getElementsByClassName('.overlay').visibility = "hidden";
+        return false;
+    }
+    else if (email == ""){
+        alert("Email must be filled out");
+        document.getElementsByClassName('.button').href = "#";
+        // document.getElementsByClassName('.overlay').visibility = "hidden";
+        return false;
+    }
+    else if (rating == undefined){
+        alert("Must submit a rating");
+        document.getElementsByClassName('.button').href = "#";
+        // document.getElementsByClassName('.overlay').visibility = "hidden";
+        return false;
+    }
+    // else if (recommend == undefined){
+    //     alert("Must chose whether to recommend");
+    //     document.getElementsByClassName('.button').href = "#";
+    //     document.getElementsByClassName('.overlay').visibility = "hidden";
+    //     return false;
+    // }
+    else{
+        document.getElementsByClassName('.button').href = "#popup";
+        // document.getElementsByClassName('.overlay').visibility = "visible";
+        return true;
+    }
+  }
+  
 const send_to_db = async (product_info) => {
     console.log(JSON.stringify(product_info));
     const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews', {
@@ -578,3 +632,5 @@ const open_home_page = () => {
   }
   document.querySelector('#my-shopping-list').innerHTML = template; 
 }
+
+star_elements.click(changeRatingStars);
