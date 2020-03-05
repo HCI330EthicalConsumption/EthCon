@@ -1,6 +1,8 @@
 let searchHTMLbody = "";
 const fillSearchHTML = () => {
-    fetch("./search.html", {mode: 'no-cors'}).then((resp) => {
+    fetch("./search.html", {
+        mode: 'no-cors'
+    }).then((resp) => {
         return resp.text();
     }).then((data) => {
         searchHTMLbody = data.match(/(?<=<body>\s*).*?(?=\s*<\/body>)/gs)[0];
@@ -11,7 +13,9 @@ fillSearchHTML();
 
 let homeHTMLbody = "";
 const fillHomeHTML = () => {
-    fetch("./index.html", {mode: 'no-cors'}).then((resp) => {
+    fetch("./index.html", {
+        mode: 'no-cors'
+    }).then((resp) => {
         return resp.text();
     }).then((data) => {
         homeHTMLbody = data.match(/(?<=<body>\s*).*?(?=\s*<\/body>)/gs)[0];
@@ -39,11 +43,12 @@ const get_user_info_from_username = (username) => {
     USER_INFO['username'] = username
     url = "https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles?where=username%3D\'" + username.replace("@", "%40") + "\'";
     console.log(url);
-    fetch(url).then((resp) => {
+    let success = false;
+    return fetch(url).then((resp) => {
         try {
             return resp.json();
         } catch {
-            return;
+            return false;
         }
     }).then((data) => {
         try {
@@ -54,11 +59,14 @@ const get_user_info_from_username = (username) => {
             } catch {
                 USER_INFO['shoppinglistlist'] = []
             }
-
             USER_INFO['shoppinglist'] = data['shoppinglist'];
             USER_INFO['objectId'] = data['objectId'];
+            success = true;
+            return true;            
         } catch {
-            window.alert("Username is not valid. Try again or create account.")
+            window.alert("Username is not valid. Try again or create account.");
+            success = false;
+            return false;
         }
     })
 }
@@ -67,7 +75,7 @@ const get_user_info_from_username = (username) => {
 const make_user = (username) => {
     USER_INFO.username = username;
     let url = "https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles";
-    fetch(url, {
+    return fetch(url, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -79,14 +87,16 @@ const make_user = (username) => {
             return resp.json();
         } else if (resp.status == 400) {
             window.alert("User already created. Sign in instead.");
+            return false
         }
     }).then((data) => {
         try {
             data = data[0]
             USER_INFO.objectId = data.objectId;
             console.log(data);
+            return true;
         } catch {
-            return
+            return false;
         }
     });
 }
@@ -527,14 +537,12 @@ function validateForm(product_info) {
         document.getElementsByClassName('.button').href = "#";
         // document.getElementsByClassName('.overlay').visibility = "hidden";
         return false;
-    }
-    else if (email == ""){
+    } else if (email == "") {
         alert("Email must be filled out");
         document.getElementsByClassName('.button').href = "#";
         // document.getElementsByClassName('.overlay').visibility = "hidden";
         return false;
-    }
-    else if (rating == undefined){
+    } else if (rating == undefined) {
         alert("Must submit a rating");
         document.getElementsByClassName('.button').href = "#";
         // document.getElementsByClassName('.overlay').visibility = "hidden";
@@ -546,13 +554,13 @@ function validateForm(product_info) {
     //     document.getElementsByClassName('.overlay').visibility = "hidden";
     //     return false;
     // }
-    else{
+    else {
         document.getElementsByClassName('.button').href = "#popup";
         // document.getElementsByClassName('.overlay').visibility = "visible";
         return true;
     }
-  }
-  
+}
+
 const send_to_db = async (product_info) => {
     console.log(JSON.stringify(product_info));
     const rawResponse = await fetch('https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/Reviews', {
@@ -601,6 +609,7 @@ function resetRatingStars() {
 
 const open_home_page = () => {
     document.querySelector("body").innerHTML = homeHTMLbody;
+    document.querySelector(".signin").style.visibility = "hidden";
     let script = document.createElement("script");
     script.type = "text/javascript";
     script.src = "./js/home.js";
@@ -610,23 +619,20 @@ const open_home_page = () => {
     /*let template = `<div id = "list-name">
     <p id="list-title">My Shopping List</p>
     <div class="line"></div>
-  </div>
-  <br></br>`;*/
-  if(USER_INFO["shoppinglistlist"].length == 0){
-      template += `<p id="empty-list">Your shopping list is empty :(.</p>
-        <p id="empty-instructions">Search for a product to add items to list.</p>`; 
-  }
-  else{
-      template += `
+    </div>
+    <br></br>`;*/
+    if (USER_INFO["shoppinglistlist"].length == 0) {
+        template += `<p id="empty-list">Your shopping list is empty :(.</p>
+        <p id="empty-instructions">Search for a product to add items to list.</p>`;
+    } else {
+        template += `
       <ol class="rectangle-list" id="shopping-list">`;
-      for(product of USER_INFO["shoppinglistlist"]){
-          template += `
+        for (product of USER_INFO["shoppinglistlist"]) {
+            template += `
           <li id="list-item"><a href=""><img class="list-img" src="${product["img"]}"><div class="list-prod">${product["name"]}</div></a></li>`;
-      }
-      template += `
+        }
+        template += `
       </ol>`;
-  }
-  document.querySelector('#my-shopping-list').innerHTML = template; 
+    }
+    document.querySelector('#my-shopping-list').innerHTML = template;
 }
-
-

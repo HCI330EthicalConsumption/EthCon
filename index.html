@@ -27,21 +27,31 @@
           <h1 id="name">Buy Better</h1>
         </a>
       </div>
-      <div id="sign-in-div">
-        <button id="sign-in">Sign in</button>
-      </div>
+      <a href="#"><button id="home-search-button"><i class="fas fa-plus"></i> Search</button></a>
     </div>
   </header>
   <br><br><br>
-  <div id = "list-name">
+  <div id="list-name">
     <p id="list-title">My Shopping List</p>
   </div>
   <br></br>
-  <a href="#"><button id="home-search-button"><i class="fas fa-plus"></i> Search</button></a>
+  <!-- <a href="#"><button id="home-search-button"><i class="fas fa-plus"></i> Search</button></a> -->
   <section id="my-shopping-list">
-    <p id="empty-list">Your shopping list is empty :(.</p>
-    <p id="empty-instructions">Search for a product to add items to list.</p>
+    <!-- <p id="empty-list">Your shopping list is empty :(.</p> -->
+    <p id="empty-instructions">Search for a product or sign in to add items to your shopping list.</p>
   </section>
+  <div class="signin">
+    <div id="login" class="login_form">
+      <h3>Login to view your shopping list</h3>
+      <input type="text" id="login-username" placeholder="Username/email" class="login_box">
+      <button id='login-button' class="login_butts">Login</button>
+    </div>
+    <div id="signup" class="login_form">
+      <h3>Sign up to create a new shopping list</h3>
+      <input type="text" id="signup-username" placeholder="Username/email" class="login_box">
+      <button id='signup-button' class="login_butts">Sign up</button>
+    </div>
+  </div>
   <script id="homescript" type="text/javascript" src="js/home.js"></script>
 </body>
 
