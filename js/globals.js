@@ -1,23 +1,23 @@
 let searchHTMLbody = "";
 const fillSearchHTML = () => {
-    fetch("./search.html").then((resp) => {
+    fetch("./search.html", {mode: 'no-cors'}).then((resp) => {
         return resp.text();
     }).then((data) => {
         searchHTMLbody = data.match(/(?<=<body>\s*).*?(?=\s*<\/body>)/gs)[0];
         console.log("searchHTML loaded");
     })
 }
-fillSearchHTML();  
+fillSearchHTML();
 
 let homeHTMLbody = "";
 const fillHomeHTML = () => {
-    fetch("./index.html").then((resp) => {
+    fetch("./index.html", {mode: 'no-cors'}).then((resp) => {
         return resp.text();
     }).then((data) => {
         homeHTMLbody = data.match(/(?<=<body>\s*).*?(?=\s*<\/body>)/gs)[0];
     })
 }
-fillHomeHTML(); 
+fillHomeHTML();
 
 let USER_INFO = {
     "username": "",
@@ -196,7 +196,10 @@ const load_results = (products) => {
               <p>${product.brand.name}</p>
           </div>
           <div>
-            <p class="numberCircle${product.rating} numberCircle">${product.rating}</p>
+            <p class="numberCircle${product.rating} numberCircle">
+                ${product.rating}
+                <p style="font-size:4;">/10</p>
+            </p>
           </div>
       </section>`
         document.querySelector('#products').innerHTML += template;
@@ -445,12 +448,35 @@ const get_product_info = async (prod_url) => {
 }
 
 const add_to_shopping_list = (event) => {
-    prod_url = event.currentTarget.getAttribute("prod-url");
+    let prod_url = event.currentTarget.getAttribute("prod-url");
     if (USER_INFO['shoppinglistlist'].indexOf(prod_url) >= 0) {
         window.alert("You already have that item in your cart!");
         return
     }
     USER_INFO['shoppinglistlist'].push(prod_url);
+    // USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
+    console.log(USER_INFO['shoppinglist']);
+    update_shopping_list("added");
+    // fetch("https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles/" + USER_INFO["objectId"], {
+    //     method: 'PUT',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(USER_INFO)
+    // }).then((resp) => {
+    //     return resp.json();
+    // }).then((data) => {
+    //     data['shoppinglist'] = JSON.parse(data['shoppinglist'])
+    //     console.log(data);
+    // })
+}
+
+const update_shopping_list = (action) => {
+    if (USER_INFO.objectId == "") {
+        window.alert("You must be signed in to add to shopping cart!");
+        return;
+    }
     USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
     console.log(USER_INFO['shoppinglist']);
     fetch("https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles/" + USER_INFO["objectId"], {
@@ -464,8 +490,18 @@ const add_to_shopping_list = (event) => {
         return resp.json();
     }).then((data) => {
         data['shoppinglist'] = JSON.parse(data['shoppinglist'])
+        window.alert("Item " + action + " from shopping list")
         console.log(data);
     })
+}
+
+const remove_from_shopping_list = (event) => {
+    let prod_url = event.currentTarget.getAttribute("prod-url");
+    const index = USER_INFO.shoppinglistlist.indexOf(prod_url);
+    if (index > -1) {
+        USER_INFO.shoppinglistlist.splice(index, 1);
+    }
+    update_shopping_list("removed");
 }
 
 const send_to_db = async (product_info) => {
@@ -521,5 +557,3 @@ const open_home_page = () => {
     script.src = "./js/home.js";
     document.querySelector("body").appendChild(script);
 }
-
-
