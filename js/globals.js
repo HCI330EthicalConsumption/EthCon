@@ -198,7 +198,6 @@ const load_results = (products) => {
           <div>
             <p class="numberCircle${product.rating} numberCircle">
                 ${product.rating}
-                <p style="font-size:4;">/10</p>
             </p>
           </div>
       </section>`
@@ -450,7 +449,7 @@ const get_product_info = async (prod_url) => {
 }
 
 const add_to_shopping_list = (event) => {
-    let prod_url = event.currentTarget.getAttribute("prod-url");
+    // let prod_url = event.currentTarget.getAttribute("prod-url");
     if (USER_INFO['shoppinglistlist'].indexOf(prod_url) >= 0) {
         window.alert("You already have that item in your cart!");
         return
@@ -458,7 +457,7 @@ const add_to_shopping_list = (event) => {
     let product = {};
     product["name"] = event.currentTarget.getAttribute("name");
     product["img"] = event.currentTarget.getAttribute("img");
-    product["url"] = event.currentTarget.getAttribute("url");
+    product["url"] = event.currentTarget.getAttribute("prod-url");
     USER_INFO['shoppinglistlist'].push(product);
     // USER_INFO['shoppinglistlist'].push(prod_url);
     // USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
@@ -505,8 +504,11 @@ const update_shopping_list = (action) => {
 }
 
 const remove_from_shopping_list = (event) => {
-    let prod_url = event.currentTarget.getAttribute("prod-url");
-    const index = USER_INFO.shoppinglistlist.indexOf(prod_url);
+    let product = {};
+    product["name"] = event.currentTarget.getAttribute("name");
+    product["img"] = event.currentTarget.getAttribute("img");
+    product["url"] = event.currentTarget.getAttribute("prod-url");
+    const index = USER_INFO.shoppinglistlist.indexOf(product);
     if (index > -1) {
         USER_INFO.shoppinglistlist.splice(index, 1);
     }
