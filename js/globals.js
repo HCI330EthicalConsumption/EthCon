@@ -458,7 +458,7 @@ const add_to_shopping_list = (event) => {
     let product = {};
     product["name"] = event.currentTarget.getAttribute("name");
     product["img"] = event.currentTarget.getAttribute("img");
-    product["url"] = event.currentTarget.getAttribyte("url");
+    product["url"] = event.currentTarget.getAttribute("url");
     USER_INFO['shoppinglistlist'].push(product);
     // USER_INFO['shoppinglistlist'].push(prod_url);
     // USER_INFO['shoppinglist'] = JSON.stringify(USER_INFO['shoppinglistlist']);
@@ -565,9 +565,6 @@ const open_home_page = () => {
     script.type = "text/javascript";
     script.src = "./js/home.js";
     document.querySelector("body").appendChild(script);
-<<<<<<< HEAD
-}
-=======
     document.querySelector('#my-shopping-list').innerHTML = "";
     let template = '';
     /*let template = `<div id = "list-name">
@@ -591,4 +588,3 @@ const open_home_page = () => {
   }
   document.querySelector('#my-shopping-list').innerHTML = template; 
 }
->>>>>>> master
