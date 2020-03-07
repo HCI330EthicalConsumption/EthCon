@@ -468,7 +468,9 @@ const add_to_shopping_list = (event) => {
     product["name"] = event.currentTarget.getAttribute("name");
     product["img"] = event.currentTarget.getAttribute("img");
     product["url"] = event.currentTarget.getAttribute("prod-url");
-    if (USER_INFO['shoppinglistlist'].indexOf(product) >= 0) {
+    console.log(product);
+    console.log(USER_INFO.shoppinglistlist);
+    if (JSON.stringify(USER_INFO['shoppinglistlist']).indexOf(JSON.stringify(product)) >= 0) {
         window.alert("You already have that item in your cart!");
         return
     }
@@ -633,7 +635,7 @@ const open_home_page = () => {
       <ol class="rectangle-list" id="shopping-list">`;
         for (product of USER_INFO["shoppinglistlist"]) {
             template += `
-          <li id="list-item"><a href=""><img class="list-img" src="${product["img"]}"><div class="list-prod">${product["name"]}</div></a></li>`;
+          <li id="list-item"><a><img class="list-img" src="${product["img"]}"><div class="list-prod">${product["name"]}</div></a></li>`;
         }
         template += `
       </ol>`;
