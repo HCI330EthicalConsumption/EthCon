@@ -182,6 +182,19 @@ window.onclick = function (event) {
 
 star_elements.click(changeRatingStars);
 
-// document.onload = () => {
-//     document.querySelector('body').style.background = 'rgba(0,0,0,.6)';
-// };
+// login stuff:
+//  username and password required for login
+//  username, password, and name required for sign up
+//  package info into a json object like:
+// profile = {
+//     "username": "",
+//     "name": "",
+//     "password": ""
+// }
+// 
+// and then pass the json object as an argument to login() or signup()
+// logout() will reset USER_INFO
+//
+// The login/sign up button is hard coded to login to "jackson", and changes the onclick function to be signout. This should instead open a popup that allows you to login or sign up.
+// The Make an new user button is hard coded to create the same new user everytime. This should be removed and signing up should be in the popup
+// login() also changes the shopping cart button text and makes it open the shopping list page
