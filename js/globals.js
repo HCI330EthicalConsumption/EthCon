@@ -1,19 +1,19 @@
 let searchHTMLbody = "";
 const fillSearchHTML = () => {
-    fetch("./search.html", {
+    fetch("./index.html", {
         mode: 'no-cors'
     }).then((resp) => {
         return resp.text();
     }).then((data) => {
         searchHTMLbody = data.match(/(?<=<body>\s*).*?(?=\s*<\/body>)/gs)[0];
-        console.log("searchHTML loaded");
+        // console.log("searchHTML loaded");
     })
 }
 fillSearchHTML();
 
 let homeHTMLbody = "";
 const fillHomeHTML = () => {
-    fetch("./index.html", {
+    fetch("./shoppinglist.html", {
         mode: 'no-cors'
     }).then((resp) => {
         return resp.text();
@@ -27,7 +27,60 @@ let USER_INFO = {
     "username": "",
     "objectId": "",
     "shoppinglistlist": [],
-    "shoppinglist": "[]"
+    "shoppinglist": "[]",
+    "name": "",
+    "password": ""
+};
+
+
+
+const SHA2 = (profile) => {
+    let passhash = forge.md.sha256.create();
+    passhash.update(profile.password);
+    passhash.update(profile.username);
+    return passhash.digest().toHex()
+}
+
+// profile should have username and password fields here. Name field is optional
+const login = async (profile) => {
+    try {
+        console.log(profile.username + profile.password);
+        if (profile.username == "" || profile.password == "") {
+            throw "Incomplete profile";
+        }
+    } catch {
+        alert("You must include a username and password");
+        console.log("login was called with a missing username or password");
+        return;
+    }
+    if (USER_INFO.objectId != "") {
+        alert("You must logout first");
+        console.log("login_request called while USER_INFO not empty");
+        return;
+    }
+    USER_INFO.password = SHA2(profile);
+    USER_INFO.username = profile.username;
+    if (await login_request(profile)) {
+        open_search_page();
+        window.alert("Welcome, " + USER_INFO.name + "!");
+    } else {
+        USER_INFO = {
+            "username": "",
+            "objectId": "",
+            "shoppinglistlist": [],
+            "shoppinglist": "[]"
+        };
+    }
+}
+
+const logout = () => {
+    USER_INFO = {
+        "username": "",
+        "objectId": "",
+        "shoppinglistlist": [],
+        "shoppinglist": "[]"
+    };
+    open_search_page();
 };
 
 const open_search_page = () => {
@@ -36,14 +89,20 @@ const open_search_page = () => {
     script.type = "text/javascript";
     script.src = "./js/search.js";
     document.querySelector("body").appendChild(script);
+    if (USER_INFO.objectId != "") {
+        console.log("user is logged in and we are reloading");
+        document.querySelector("#login-button").innerHTML = "Log out of " + USER_INFO.username;
+        document.querySelector("#login-button").onclick = logout;
+        document.querySelector("#gotoshoppinglist").onclick = open_home_page;
+        document.querySelector("#gotoshoppinglist").innerHTML = "View Shopping Cart";
+    }
+    console.log("end of open search page");
 }
 
-// Gets the user information based on his/her username. objectId is what is used in future requests to update the shopping list, otherwise PUT doesn't work.
-const get_user_info_from_username = (username) => {
-    USER_INFO['username'] = username
-    url = "https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles?where=username%3D\'" + username.replace("@", "%40") + "\'";
+// Gets the user information based on his/her information stored in the USER_INFO global variable. objectId is what is used in future requests to update the shopping list, otherwise PUT doesn't work.
+const login_request = () => {
+    url = "https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles?where=username%3D\'" + USER_INFO.username + "\'%20and%20password%3D\'" + USER_INFO.password + "\'";
     console.log(url);
-    let success = false;
     return fetch(url).then((resp) => {
         try {
             return resp.json();
@@ -57,23 +116,49 @@ const get_user_info_from_username = (username) => {
             try {
                 USER_INFO['shoppinglistlist'] = JSON.parse(data['shoppinglist']);
             } catch {
-                USER_INFO['shoppinglistlist'] = []
+                USER_INFO['shoppinglistlist'] = [];
             }
             USER_INFO['shoppinglist'] = data['shoppinglist'];
             USER_INFO['objectId'] = data['objectId'];
+            USER_INFO.name = data.name;
             success = true;
-            return true;            
+            return true;
         } catch {
-            window.alert("Username is not valid. Try again or create account.");
+            window.alert("Username or password is not valid. Try again or create account.");
             success = false;
             return false;
         }
     })
 }
 
+const sign_up = async (profile) => {
+    try {
+        console.log(profile.name + profile.username + profile.name);
+        if (profile.name == "" || profile.username == "" || profile.password == "") {
+            throw "Incomplete profile";
+        }
+    } catch {
+        alert("You must include a username, name, and password");
+        console.log("make_user was called without a name, username, or password in profile");
+        return;
+    }
+    if (USER_INFO.objectId != "") {
+        alert("You must logout first");
+        console.log("login_request called while USER_INFO not empty");
+        return;
+    }
+    if (await make_user(profile)) {
+        alert("Welcome, " + USER_INFO.name + "!");
+        open_search_page();
+    }
+}
+
 // Makes a user profile if he/she has not already made an account
-const make_user = (username) => {
-    USER_INFO.username = username;
+//  profile must include username, password, and name
+const make_user = (profile) => {
+    USER_INFO.username = profile.username;
+    USER_INFO.password = SHA2(profile);
+    USER_INFO.name = profile.name;
     let url = "https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles";
     return fetch(url, {
         method: 'POST',
@@ -86,7 +171,7 @@ const make_user = (username) => {
         if (resp.status == 200) {
             return resp.json();
         } else if (resp.status == 400) {
-            window.alert("User already created. Sign in instead.");
+            window.alert("User already created. Sign in or use another username.");
             return false
         }
     }).then((data) => {
