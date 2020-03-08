@@ -43,6 +43,21 @@ const SHA2 = (profile) => {
 
 // profile should have username and password fields here. Name field is optional
 const login = async (profile) => {
+    try {
+        console.log(profile.username + profile.password);
+        if (profile.username == "" || profile.password == "") {
+            throw "Incomplete profile";
+        }
+    } catch {
+        alert("You must include a username and password");
+        console.log("login was called with a missing username or password");
+        return;
+    }
+    if (USER_INFO.objectId != "") {
+        alert("You must logout first");
+        console.log("login_request called while USER_INFO not empty");
+        return;
+    }
     USER_INFO.password = SHA2(profile);
     USER_INFO.username = profile.username;
     if (await login_request(profile)) {
@@ -86,10 +101,6 @@ const open_search_page = () => {
 
 // Gets the user information based on his/her information stored in the USER_INFO global variable. objectId is what is used in future requests to update the shopping list, otherwise PUT doesn't work.
 const login_request = () => {
-    if (USER_INFO.objectId != "") {
-        alert("You must logout first");
-        console.log("login_request called while USER_INFO not empty")
-    }
     url = "https://api.backendless.com/90F1341F-11F7-B61D-FFA2-49B2E5011D00/A72236EE-A275-4EEA-A8D0-E27D9A4C1F0C/data/userprofiles?where=username%3D\'" + USER_INFO.username + "\'%20and%20password%3D\'" + USER_INFO.password + "\'";
     console.log(url);
     return fetch(url).then((resp) => {
@@ -105,7 +116,7 @@ const login_request = () => {
             try {
                 USER_INFO['shoppinglistlist'] = JSON.parse(data['shoppinglist']);
             } catch {
-                USER_INFO['shoppinglistlist'] = []
+                USER_INFO['shoppinglistlist'] = [];
             }
             USER_INFO['shoppinglist'] = data['shoppinglist'];
             USER_INFO['objectId'] = data['objectId'];
@@ -121,8 +132,23 @@ const login_request = () => {
 }
 
 const sign_up = async (profile) => {
+    try {
+        console.log(profile.name + profile.username + profile.name);
+        if (profile.name == "" || profile.username == "" || profile.password == "") {
+            throw "Incomplete profile";
+        }
+    } catch {
+        alert("You must include a username, name, and password");
+        console.log("make_user was called without a name, username, or password in profile");
+        return;
+    }
+    if (USER_INFO.objectId != "") {
+        alert("You must logout first");
+        console.log("login_request called while USER_INFO not empty");
+        return;
+    }
     if (await make_user(profile)) {
-        alert("Welcome, " + USER_INFO.name)
+        alert("Welcome, " + USER_INFO.name + "!");
         open_search_page();
     }
 }
@@ -130,11 +156,6 @@ const sign_up = async (profile) => {
 // Makes a user profile if he/she has not already made an account
 //  profile must include username, password, and name
 const make_user = (profile) => {
-    try {
-        console.log(profile.name + profile.username + profile.name);
-    } catch {
-        alert("You must include a username, name, and password")
-    }
     USER_INFO.username = profile.username;
     USER_INFO.password = SHA2(profile);
     USER_INFO.name = profile.name;

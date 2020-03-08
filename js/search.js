@@ -182,10 +182,12 @@ window.onclick = function (event) {
 
 star_elements.click(changeRatingStars);
 
-// login stuff:
+// login:
 //  username and password required for login
+// signup:
 //  username, password, and name required for sign up
-//  package info into a json object like:
+//
+// package the info into a json object like:
 // profile = {
 //     "username": "",
 //     "name": "",
