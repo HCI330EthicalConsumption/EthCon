@@ -416,6 +416,7 @@ i {
     padding-top: 0;
     padding-left: 5px;
     box-shadow: 0 0 1px 3px rgba(19, 194, 194, .6);
+    margin-right: 3px;
 }
 
 .select-css::-ms-expand {
@@ -1104,11 +1105,16 @@ a {
     transform: translate(0, 0);
 }
 
+#navigation{
+    justify-content: right;
+    align-items: right;
+}
 
 .pwrap {
     max-width: 400px;
     margin: auto;
     margin-top: 40px;
+    float: right;
 }
 
 .pagination {
