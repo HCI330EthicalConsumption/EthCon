@@ -22,26 +22,23 @@ document.querySelector("#sortby").onchange = async () => {
     }
 };
 
-var modal = document.getElementById("myModal");
-//var modal = document.getElementsByClassName("modal");
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function () {
-    modal.style.display = "none";
-};
-
 window.onclick = function (event) {
+    var modal = document.getElementById("myModal");
+    var loginModal = document.getElementById("loginModal");
+    var signupModal = document.getElementById("signupModal");
     if (event.target == modal) {
         modal.style.display = "none";
+    }
+    else if (event.target == loginModal) {
+        loginModal.style.display = "none";
+    }
+    else if (event.target == signupModal) {
+        signupModal.style.display = "none";
     }
 };
 
 document.querySelector("#add_to_shopping_list").onclick = add_to_shopping_list;
 
-var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function () {
-    modal.style.display = "none";
-};
 
 document.querySelector('#rate').onclick = async () => {
     name = document.querySelector('#name1').value;
@@ -174,12 +171,6 @@ document.querySelector('#yes').onclick = async () => {
 document.querySelector('#no').onclick = async () => {
     recommend = document.querySelector('.recommend').value = 'No';
 }
-
-window.onclick = function (event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-};
 
 star_elements.click(changeRatingStars);
 
