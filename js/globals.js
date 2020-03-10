@@ -73,6 +73,32 @@ const login = async (profile) => {
     }
 }
 
+const login_submit = async () => {
+    let un = document.getElementById("username").value; 
+    let pass = document.getElementById("password").value;
+    login({'username': un, 'name': un, 'password': pass});
+};
+
+const signup_submit = async () => {
+    console.log('here');
+    let name = document.getElementById("new_name").value;
+    let un = document.getElementById("new_username").value; 
+    let pass = document.getElementById("new_password").value;
+    console.log(un); 
+    console.log(pass);
+    sign_up({'username': un, 'name': un, 'password': pass});
+};
+
+const open_login_modal = async () => {
+    modal = document.querySelector("#loginModal");
+    modal.style.display = "block"; 
+};
+
+const open_signup_modal = async () => {
+    modal = document.querySelector("#signupModal");
+    modal.style.display = "block"; 
+};
+
 const logout = () => {
     USER_INFO = {
         "username": "",

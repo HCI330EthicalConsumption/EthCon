@@ -28,22 +28,24 @@
         <!-- <Icon type="search" theme="filled"/> -->
         <i class="fas fa-search"></i>
       </button>
-      <button type="submit" id="login-button" onclick="login({
+      <!--<button type="submit" id="login-button" onclick="login({
         'username': 'jackson',
         'name': 'jackson',
         'password': 'jacksonspass'
-    })">
-        Login / Sign Up
+    })">-->
+      <button type="submit" class = "login-button" id="login-button" onclick="open_login_modal()">
+        Login
       </button>
       <button type="submit" id="gotoshoppinglist">
         Log in to view shopping list
       </button>
-      <button type="submit" id="signup-button" onclick="sign_up({
+      <!--<button type="submit" id="signup-button" onclick="sign_up({
         'username': 'jackon9',
         'name': 'Jackson',
         'password': 'jacksonspass2'
-      })">
-        Make a new user
+      })">-->
+      <button type="submit" id="signup-button" onclick="open_signup_modal()">
+         Sign Up!
       </button>
     </div>
     </div>
@@ -63,6 +65,37 @@
   </section>
   <p data-boi="hello">
   </p>
+
+  <div id="loginModal" class="modal">
+    <div class="loginModal-content">
+      <span class="close">&times;</span>
+      <form class="login-form">
+        <h2 class="login-title" style="text-align: center;">Login</h2>
+        <label for="username">Username</label><br>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required /><br>
+        <label for="password">Password</label><br>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required /><br>
+      </form>
+      <button type="submit" class="login-submit" id="login-submit" onclick="login_submit()">Login</button>
+    </div>
+  </div>
+
+  <div id="signupModal" class="modal">
+    <div class="signupModal-content">
+      <span class="close">&times;</span>
+      <form class="signup-form">
+        <h2 class="signup-title" style="text-align: center;">Create an Account</h2>
+        <label for="new_name">Name</label><br>
+        <input type="text" id="new_name" name="new_name" placeholder="Enter your name" required /><br>
+        <label for="new_username">Username</label><br>
+        <input type="text" id="new_username" name="new_username" placeholder="Enter your username" required /><br>
+        <label for="new_password">Password</label><br>
+        <input type="password" id="new_password" name="new_password" placeholder="Enter your password" required /><br>
+      </form>
+      <button type="submit" class="signup-submit" id="signup-submit" onclick="signup_submit()">Sign Up</button>
+    </div>
+  </div> 
+
 
   <!-- The Modal -->
   <div id="myModal" class="modal">

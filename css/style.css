@@ -787,6 +787,65 @@ body {
     text-align: center;
 }
 
+.login-form input{
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.signup-form input{
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.loginModal-content button {
+    text-transform: uppercase;
+    outline: 0;
+    background: rgba(19, 194, 194, .6);
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+  }
+
+  .signupModal-content button {
+    text-transform: uppercase;
+    outline: 0;
+    background: rgba(19, 194, 194, .6);
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+  }
+
+
+.signup-title{
+    margin-left: 10px;
+}
+
+.login-title{
+    margin-left: 20px; 
+}
+
 .modal-content .rate {
     width: 18%;
     height: 31px;
@@ -803,6 +862,28 @@ body {
     padding-left: 0;
     padding-right: 0;
     margin: 0;
+}
+
+.loginModal-content {
+    background-color: #fefefe;
+    margin: 8% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    align-items: left;
+    text-align: left;
+    /* Could be more or less, depending on screen size */
+}
+
+.signupModal-content {
+    background-color: #fefefe;
+    margin: 8% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 35%;
+    align-items: left;
+    text-align: left;
+    /* Could be more or less, depending on screen size */
 }
 
 
