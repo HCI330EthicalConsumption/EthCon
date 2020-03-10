@@ -306,6 +306,7 @@ function loadPage(i) {
 // Given an array of product json objects, loads the products into the #product HTML element.
 //  Each product json object should include: id, image, name, brand.name, and rating
 const load_results = (products) => {
+    generateSearchBarCss();
     generatePaginationHtml(numberOfPages, currentPage);
     let begin = ((currentPage - 1) * numberPerPage);
     let end = begin + numberPerPage;
@@ -752,4 +753,13 @@ const open_home_page = () => {
       </ol>`;
     }
     document.querySelector('#my-shopping-list').innerHTML = template;
+}
+
+function generateSearchBarCss() {
+    let w = document.querySelector('.wrap');
+    w.style.top = "45%";
+    w.style.left = "25%";
+    w.style.padding = "0";
+    w.style.float = "left";
+    w.style.transform = "translate(-50%. -50%)";
 }
