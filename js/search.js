@@ -23,6 +23,7 @@ document.querySelector("#sortby").onchange = async () => {
 };
 
 var modal = document.getElementById("myModal");
+//var modal = document.getElementsByClassName("modal");
 var span = document.getElementsByClassName("close")[0];
 span.onclick = function () {
     modal.style.display = "none";
@@ -181,6 +182,7 @@ window.onclick = function (event) {
 };
 
 star_elements.click(changeRatingStars);
+
 
 // login:
 //  username and password required for login
