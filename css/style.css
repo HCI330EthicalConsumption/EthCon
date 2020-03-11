@@ -512,6 +512,7 @@ i {
     margin: 0;
     font-size: x-large;
     font-weight: 300;
+    cursor: pointer;
 }
 
 body {
