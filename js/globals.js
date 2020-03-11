@@ -129,7 +129,7 @@ const open_search_page = () => {
         document.querySelector("#signup-button").onclick = open_home_page;
     }
     console.log("end of open search page");
-}
+};
 
 // Gets the user information based on his/her information stored in the USER_INFO global variable. objectId is what is used in future requests to update the shopping list, otherwise PUT doesn't work.
 const login_request = () => {
@@ -814,6 +814,7 @@ const open_home_page = () => {
     for (prod of document.querySelectorAll('.trash')) {
         prod.onclick = remove_from_shopping_list; 
     }
+}
 
 function generateSearchBarCss() {
     let x = document.querySelector('.search-hide');
@@ -824,4 +825,4 @@ function generateSearchBarCss() {
     w.style.padding = "0";
     w.style.float = "left";
     w.style.transform = "translate(-50%. -50%)";
-}
+};
