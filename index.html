@@ -11,6 +11,7 @@
 </head>
 
 <body>
+  <img id="bg-img" src="background.jpg">
   <header id="header" class="header">
     <div id="name_div">
       <a id="home-button">
@@ -19,6 +20,10 @@
     </div>
     <div class="wrap">
       <div class="search"></div>
+      <div class="search-hide">
+          <h1>Search for ethical products.</h1>
+          <h1>Buy Better.</h1>
+      </div>
       <input id="search-terms" class="search-terms" type="text" placeholder="Enter a search term">
       <select name="sortby" id="sortby" class="select-css">
         <option value="rating">Rating</option>
@@ -85,7 +90,7 @@
         <label for="new_password">Password</label><br>
         <input type="password" id="new_password" name="new_password" placeholder="Enter your password" required /><br>
       </form>
-      <button type="submit" class="signup-submit" id="signup-submit" onclick="signup_submit()">Sign Up</button>
+      <button type="submit" class="signup-submit" id="signup-submit" onclick="signup_submit()">Register</button>
     </div>
   </div> 
 
