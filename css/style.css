@@ -144,6 +144,11 @@ main {
     margin-right: .5em;
 }
 
+.trash i:hover {
+    cursor: grab;
+    color: #cf1322;
+}
+
 ol {
     counter-reset: li; /* Initiate a counter */
     list-style: none; /* Remove default numbering */
