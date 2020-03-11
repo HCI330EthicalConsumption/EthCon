@@ -662,18 +662,24 @@ const update_shopping_list = (action) => {
 
 const remove_from_shopping_list = (event) => {
     let product = {};
-    product["name"] = event.currentTarget.getAttribute("name");
-    product["img"] = event.currentTarget.getAttribute("img");
+    let product_card = event.currentTarget.parentElement;
+    product["name"] = product_card.querySelector("div.list-prod").innerHTML;
+    product["img"] = product_card.querySelector("img.list-img").src;
     product["url"] = event.currentTarget.getAttribute("prod-url");
 
     console.log(JSON.stringify(product));
-    const index = USER_INFO.shoppinglist.indexOf(JSON.stringify(product));
-    console.log(index);
-    if (index > -1) {
-        USER_INFO.shoppinglist.splice(index, JSON.stringify(product).length);
-        console.log(USER_INFO.shoppinglist)
+    // const index = USER_INFO.shoppinglist.indexOf(JSON.stringify(product));
+    // console.log(index);
+    for (index in USER_INFO.shoppinglistlist) {
+        if (USER_INFO.shoppinglistlist[index].url == product.url) {
+            USER_INFO.shoppinglistlist.splice(index, 1);
+        }
     }
-    USER_INFO.shoppinglistlist = JSON.parse(USER_INFO.shoppinglist);
+    // if (index > -1) {
+    //     USER_INFO.shoppinglist.splice(index, JSON.stringify(product).length);
+    //     console.log(USER_INFO.shoppinglist);
+    // }
+    // USER_INFO.shoppinglistlist = JSON.parse(USER_INFO.shoppinglist);
 
     
     // const index = USER_INFO.shoppinglistlist.indexOf(product);
@@ -681,6 +687,7 @@ const remove_from_shopping_list = (event) => {
     //     USER_INFO.shoppinglistlist.splice(index, 1);
     // }
     update_shopping_list("removed");
+    open_home_page();
 }
 
 
@@ -793,5 +800,7 @@ const open_home_page = () => {
       </ol>`;
     }
     document.querySelector('#my-shopping-list').innerHTML = template;
-    document.querySelector('.trash').onclick = remove_from_shopping_list; 
+    for (prod of document.querySelectorAll('.trash')) {
+        prod.onclick = remove_from_shopping_list; 
+    }
 }
