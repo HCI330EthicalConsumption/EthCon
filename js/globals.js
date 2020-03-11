@@ -315,6 +315,8 @@ function loadPage(i) {
 //  Each product json object should include: id, image, name, brand.name, and rating
 const load_results = (products) => {
     generateSearchBarCss();
+    //document.querySelector('body').style.backgroundImage = "none";
+    document.querySelector('#bg-img').style.display = "none";
     generatePaginationHtml(numberOfPages, currentPage);
     let begin = ((currentPage - 1) * numberPerPage);
     let end = begin + numberPerPage;
@@ -764,8 +766,10 @@ const open_home_page = () => {
 }
 
 function generateSearchBarCss() {
+    let x = document.querySelector('.search-hide');
+    x.style.display = "none"
     let w = document.querySelector('.wrap');
-    w.style.top = "45%";
+    w.style.top = "15%";
     w.style.left = "25%";
     w.style.padding = "0";
     w.style.float = "left";
