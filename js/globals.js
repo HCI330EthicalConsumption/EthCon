@@ -90,11 +90,15 @@ const signup_submit = async () => {
 };
 
 const open_login_modal = async () => {
+    wrap = document.querySelector('.wrap');
+    wrap.style.display = "none"; 
     modal = document.querySelector("#loginModal");
     modal.style.display = "block"; 
 };
 
 const open_signup_modal = async () => {
+    wrap = document.querySelector('.wrap');
+    wrap.style.display = "none"; 
     modal = document.querySelector("#signupModal");
     modal.style.display = "block"; 
 };
@@ -119,8 +123,10 @@ const open_search_page = () => {
         console.log("user is logged in and we are reloading");
         document.querySelector("#login-button").innerHTML = "Log out of " + USER_INFO.username;
         document.querySelector("#login-button").onclick = logout;
-        document.querySelector("#gotoshoppinglist").onclick = open_home_page;
-        document.querySelector("#gotoshoppinglist").innerHTML = "View Shopping Cart";
+        //document.querySelector("#gotoshoppinglist").onclick = open_home_page;
+        //document.querySelector("#gotoshoppinglist").innerHTML = "View Shopping Cart";
+        document.querySelector("#signup-button").innerHTML = "View Shopping List";
+        document.querySelector("#signup-button").onclick = open_home_page;
     }
     console.log("end of open search page");
 }
@@ -288,13 +294,15 @@ function generatePaginationHtml(totalCount, currentPage) {
         template += `
         <div class = "pagination"><a "`;
         if (currentPage == i) {
-            template += `class="active" `;
+            template += `class="active" style="border-bottom:3px solid rgba(19, 194, 194, .6)"`;
         }
         template += `href="#" onclick="loadPage(` + i + `)">` + i + `</a></div>`;
     }
     template += `
         </div>`;
     document.querySelector('#navigation').innerHTML = template;
+    document.querySelector('#bottom-navigation').innerHTML = template;
+
 };
 
 function loadPage(i) {

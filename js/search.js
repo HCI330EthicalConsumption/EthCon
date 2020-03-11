@@ -28,12 +28,18 @@ window.onclick = function (event) {
     var signupModal = document.getElementById("signupModal");
     if (event.target == modal) {
         modal.style.display = "none";
+        wrap = document.querySelector('.wrap');
+        wrap.style.display = "block"; 
     }
     else if (event.target == loginModal) {
         loginModal.style.display = "none";
+        wrap = document.querySelector('.wrap');
+        wrap.style.display = "block"; 
     }
     else if (event.target == signupModal) {
         signupModal.style.display = "none";
+        wrap = document.querySelector('.wrap');
+        wrap.style.display = "block"; 
     }
 };
 
