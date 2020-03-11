@@ -113,20 +113,36 @@ main {
     overflow: hidden;
 }
 
+/* .img_div{
+    max-width: 100px;
+    max-height: 100px;
+} */
+
 .list-prod{
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
          'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
          'Segoe UI Emoji', 'Segoe UI Symbol';
     font-size: 22px;
+    justify-self: right;
     float: right;
-    width: auto;
-    padding: 35px;
+    /* padding-left: 650px; */
+    /* display: flex;
+    flex-direction: row;
+    justify-content: space-around; */
+    width:auto;
+}
+/* 
+.list-content{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width:auto;
-}
+} */
 
+.trash{
+    font-size: 32px;
+    color: #f5222d;
+    margin-right: .5em;
+}
 
 ol {
     counter-reset: li; /* Initiate a counter */
@@ -142,7 +158,11 @@ ol {
   
 .rectangle-list a{
       position: relative;
-      display: block;
+      /* display: block; */
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
       padding: .4em .4em .4em .8em;
       *padding: .4em;
       margin: .5em 0 .5em 2.5em;
@@ -189,6 +209,8 @@ ol {
       left: -.5em;
       border-left-color: #FC7753;
 }
+
+
 
 #sign-in-div{
     margin-right: 5px;

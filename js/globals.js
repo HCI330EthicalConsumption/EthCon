@@ -665,10 +665,21 @@ const remove_from_shopping_list = (event) => {
     product["name"] = event.currentTarget.getAttribute("name");
     product["img"] = event.currentTarget.getAttribute("img");
     product["url"] = event.currentTarget.getAttribute("prod-url");
-    const index = USER_INFO.shoppinglistlist.indexOf(product);
+
+    console.log(JSON.stringify(product));
+    const index = USER_INFO.shoppinglist.indexOf(JSON.stringify(product));
+    console.log(index);
     if (index > -1) {
-        USER_INFO.shoppinglistlist.splice(index, 1);
+        USER_INFO.shoppinglist.splice(index, JSON.stringify(product).length);
+        console.log(USER_INFO.shoppinglist)
     }
+    USER_INFO.shoppinglistlist = JSON.parse(USER_INFO.shoppinglist);
+
+    
+    // const index = USER_INFO.shoppinglistlist.indexOf(product);
+    // if (index > -1) {
+    //     USER_INFO.shoppinglistlist.splice(index, 1);
+    // }
     update_shopping_list("removed");
 }
 
@@ -776,10 +787,11 @@ const open_home_page = () => {
       <ol class="rectangle-list" id="shopping-list">`;
         for (product of USER_INFO["shoppinglistlist"]) {
             template += `
-          <li id="list-item"><a><img class="list-img" src="${product["img"]}"><div class="list-prod">${product["name"]}</div><div id="trash"><i class="fas fa-trash"></i></div></a></li>`;
+          <li id="list-item"><a class="list-content"><img class="list-img" src="${product["img"]}"><div class="list-prod">${product["name"]}</div><div class="trash" name=${product["name"]} img=${product["img"]} prod-url=${product["url"]}><i class="fas fa-trash"></i></div></a></li>`; 
         }
         template += `
       </ol>`;
     }
     document.querySelector('#my-shopping-list').innerHTML = template;
+    document.querySelector('.trash').onclick = remove_from_shopping_list; 
 }

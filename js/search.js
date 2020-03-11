@@ -175,6 +175,8 @@ document.querySelector('#no').onclick = async () => {
 star_elements.click(changeRatingStars);
 
 
+
+
 // login:
 //  username and password required for login
 // signup:
