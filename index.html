@@ -61,7 +61,6 @@
          <section id="products">
 
            </section>
-      
   </section>
   <p data-boi="hello">
   </p>
@@ -104,8 +103,8 @@
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
       <div class="modal-body"></div>
+      <button type="submit" class="add" id="add_to_shopping_list">Add to Shopping List</button>
       <div class="reviews">
-        <h1>Reviews</h1>
         <div class="prev_reviews">
           <section class="review-card"></section>
         </div>
@@ -125,14 +124,18 @@
           </ul>
           <label for="review_text">Write a review</label><br>
           <input type="text" id="review" name="review" placeholder="Write a review" required /><br><br>
-          <label for="recommend">Would you recommend this product?</label>
-          <input type="radio" id="yes" name="recommend" value="None" class="recommend">
-          <label for="yes">Yes</label><br>
-          <input type="radio" id="no" name="recommend" value="None" class="recommend">
-          <label for="no">No</label><br>
+          <div id="yes_no">
+            <label for="recommend">Would you recommend this product?</label>
+            <input type="radio" id="yes" name="recommend" value="None" class="recommend">
+            <label for="yes">Yes</label>
+            <input type="radio" id="no" name="recommend" value="None" class="recommend">
+            <label for="no">No</label>
+            <button type="submit" class="rate" id="rate">Submit</button>
+          </div>
         </form>
+        <!-- <button type="submit" class="add" id="add_to_shopping_list">Add to Shopping List</button> -->
         <!-- <a class="button" href="#popup"> -->
-        <button type="submit" class="rate" id="rate">Submit</button>
+        <!-- <button type="submit" class="rate" id="rate">Submit</button> -->
         <!-- </a> -->
         <!-- <div id="popup" class="overlay">
           <div class="popup">
@@ -142,25 +145,7 @@
             </div>
           </div>
         </div> -->
-        <!-- <div class="stars-outer">
-          <div class="stars-inner"></div>
-        </div> -->
-        <!-- <div class="stars"data-rating="0">
-          <a class="star off" title="did not like it" href="#" ref="bm_rtg_st1_bsh">1 of 5 stars</a>
-          <a class="star off" title="it was ok" href="#" ref="bm_rtg_st2_bsh">2 of 5 stars</a>
-          <a class="star off" title="liked it" href="#" ref="bm_rtg_st3_bsh">3 of 5 stars</a>
-          <a class="star off" title="really liked it" href="#" ref="bm_rtg_st4_bsh">4 of 5 stars</a>
-          <a class="star off" title="it was amazing" href="#" ref="bm_rtg_st5_bsh">5 of 5 stars</a>
-        </div> -->
-        <!-- <ul class="list-inline rating-list">
-          <li><i class="fa fa-star gray"></i></li>
-          <li><i class="fa fa-star gray"></i></li>
-          <li><i class="fa fa-star gray"></i></li>
-          <li><i class="fa fa-star gray"></i></li>
-          <li><i class="fa fa-star gray"></i></li>
-      </ul> -->
       </div>
-      <button type="submit" class="add" id="add_to_shopping_list">Add to Shopping List</button>
     </div>
   </div>
   <script src="./js/search.js" type="text/javascript"></script>

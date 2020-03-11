@@ -324,6 +324,7 @@ const load_results = (products) => {
             <p class="numberCircle${product.rating} numberCircle">
                 ${product.rating}
             </p>
+            <span id="hover_text">Our ratings are out of ten, and are derived by evaluating ingredient hazards to the environment, transparency of the parent company, and policies regarding fair wages and treatment of workers.</span>
           </div>
       </section>`
         document.querySelector('#products').innerHTML += template;
@@ -350,14 +351,16 @@ const load_results = (products) => {
             // Make product page with the product_info
             document.querySelector(".modal-body").innerHTML =
                 `<div id="modal_overall" product_url="${product_info.product_url}">${product_info.name}</div>
+            <div id="prod_stuff">
                <div class="modal-img">
                  <img src="${product_info.img}">
               </div>
-              <div>Parent Company: ${product_info.parent_companies[0]}</div>
-              <div>Ethical Responsibility: ${product_info.rating}</div>`;
-            document.querySelector(".modal-body").innerHTML += parse_rating_info(product_info.rating_info);
-            document.querySelector(".modal-body").innerHTML += `<div>About the Product: ${product_info.about}</div>`;
-            /*document.querySelector(".modal-body").innerHTML += parse_related_products(product_info.related_products);*/
+                <div id="basic_info">
+                <div><h4>Parent Company: </h4>${product_info.parent_companies[0]}</div>
+                <div id="rating_info"><h4>Ethical Responsibility: </h4>${product_info.rating}/10</div>`;
+            document.querySelector("#rating_info").innerHTML += parse_rating_info(product_info.rating_info);
+            document.querySelector(".modal-body").innerHTML += `<div id="product_about"><h4>About the Product: </h4>${product_info.about}</div>`;
+            document.querySelector(".modal-body").innerHTML += parse_related_products(product_info.related_products);
             get_reviews(product_info.product_url)
                 .then((data) => {
                     display_reviews(data);
@@ -366,6 +369,10 @@ const load_results = (products) => {
             modal.style.display = "block";
             document.getElementById("review_form").reset();
             resetRatingStars();
+            if (USER_INFO.objectId == "") {
+                console.log('no log in');
+                document.querySelector("#add_to_shopping_list").innerHTML = "Login to add to shopping cart";
+            }
         }
     }
 };
@@ -384,12 +391,34 @@ const display_reviews = (reviews) => {
     }
     for (review of reviews) {
         const template = `<section class="review-card" id="${review.product_url}" product-url="${review.product_url}">
-            <div class="name">${review.name} rated it ${review.rating}</div>
-            <div class="review_text">${review.review_text}</div>
+            <div class="name"><span>${review.name}</span> rated it ${display_stars(review.rating)}</div>
             <div class="recommended">Would recommend? ${review.recommend}</div>
+            <div class="break"></div>
+            <div class="review_text">${review.review_text}</div>
       </section>`
         document.querySelector('.prev_reviews').innerHTML += template;
     };
+}
+
+const display_stars = (rating) =>{
+    var template = ``
+    if (rating == '1'){
+        template = `<i class="fas fa-star"></i>`
+    }
+    if (rating == '2'){
+        template = `<i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>`
+    }
+    if (rating== '3'){
+        template = `<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>`
+    }
+    if (rating== '4'){
+        template = `<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>`
+    }
+    if (rating== '5'){
+        template = `<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>`
+    }
+    return template
 }
 
 const get_reviews = async (product_url) => {
@@ -406,20 +435,21 @@ const get_reviews = async (product_url) => {
 }
 
 const parse_rating_info = (ratingInfo) => {
-    let str = "<div>Rating details: ";
+    let str = "<div><h3>Rating details: </h3>";
     for (info of ratingInfo) {
         str += `
-         <div>${info.criterion}</div>
-         <div>${info.rating}</div>`;
+            <div><h4>${info.criterion}: </h4>${info.rating}/10</div>
+            </div>`;
     }
-    str += "</div>";
+    str += "</div> </div>";
     return str;
 }
 
 const parse_related_products = (relatedProducts) => {
-    let str = "<div>Related Products: ";
+    let str = "<div id='related'><h4>Related Products: </h4>";
     for (product of relatedProducts) {
-        str += `<div product_url="${product.url}">
+        str += `
+            <div product_url="${product.url}">
             <div>
             <img src="${product.img}">
             </div>
@@ -746,7 +776,7 @@ const open_home_page = () => {
       <ol class="rectangle-list" id="shopping-list">`;
         for (product of USER_INFO["shoppinglistlist"]) {
             template += `
-          <li id="list-item"><a><img class="list-img" src="${product["img"]}"><div class="list-prod">${product["name"]}</div></a></li>`;
+          <li id="list-item"><a><img class="list-img" src="${product["img"]}"><div class="list-prod">${product["name"]}</div><div id="trash"><i class="fas fa-trash"></i></div></a></li>`;
         }
         template += `
       </ol>`;
