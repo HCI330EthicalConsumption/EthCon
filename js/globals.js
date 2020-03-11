@@ -90,11 +90,15 @@ const signup_submit = async () => {
 };
 
 const open_login_modal = async () => {
+    wrap = document.querySelector('.wrap');
+    wrap.style.display = "none"; 
     modal = document.querySelector("#loginModal");
     modal.style.display = "block"; 
 };
 
 const open_signup_modal = async () => {
+    wrap = document.querySelector('.wrap');
+    wrap.style.display = "none"; 
     modal = document.querySelector("#signupModal");
     modal.style.display = "block"; 
 };
@@ -119,8 +123,10 @@ const open_search_page = () => {
         console.log("user is logged in and we are reloading");
         document.querySelector("#login-button").innerHTML = "Log out of " + USER_INFO.username;
         document.querySelector("#login-button").onclick = logout;
-        document.querySelector("#gotoshoppinglist").onclick = open_home_page;
-        document.querySelector("#gotoshoppinglist").innerHTML = "View Shopping Cart";
+        //document.querySelector("#gotoshoppinglist").onclick = open_home_page;
+        //document.querySelector("#gotoshoppinglist").innerHTML = "View Shopping Cart";
+        document.querySelector("#signup-button").innerHTML = "View Shopping List";
+        document.querySelector("#signup-button").onclick = open_home_page;
     }
     console.log("end of open search page");
 }
@@ -288,13 +294,15 @@ function generatePaginationHtml(totalCount, currentPage) {
         template += `
         <div class = "pagination"><a "`;
         if (currentPage == i) {
-            template += `class="active" `;
+            template += `class="active" style="border-bottom:3px solid rgba(19, 194, 194, .6)"`;
         }
         template += `href="#" onclick="loadPage(` + i + `)">` + i + `</a></div>`;
     }
     template += `
         </div>`;
     document.querySelector('#navigation').innerHTML = template;
+    document.querySelector('#bottom-navigation').innerHTML = template;
+
 };
 
 function loadPage(i) {
@@ -306,6 +314,9 @@ function loadPage(i) {
 // Given an array of product json objects, loads the products into the #product HTML element.
 //  Each product json object should include: id, image, name, brand.name, and rating
 const load_results = (products) => {
+    generateSearchBarCss();
+    //document.querySelector('body').style.backgroundImage = "none";
+    document.querySelector('#bg-img').style.display = "none";
     generatePaginationHtml(numberOfPages, currentPage);
     let begin = ((currentPage - 1) * numberPerPage);
     let end = begin + numberPerPage;
@@ -803,4 +814,14 @@ const open_home_page = () => {
     for (prod of document.querySelectorAll('.trash')) {
         prod.onclick = remove_from_shopping_list; 
     }
+
+function generateSearchBarCss() {
+    let x = document.querySelector('.search-hide');
+    x.style.display = "none"
+    let w = document.querySelector('.wrap');
+    w.style.top = "15%";
+    w.style.left = "25%";
+    w.style.padding = "0";
+    w.style.float = "left";
+    w.style.transform = "translate(-50%. -50%)";
 }
