@@ -43,6 +43,7 @@ We managed to create an app that lets users search for products they want to kno
 
 ## Links
 - Github Repository: https://github.com/HCI330EthicalConsumption/EthCon
+- Github pages: https://hci330ethicalconsumption.github.io/EthCon/
 - Instructions: The application is best viewed on Google Chrome desktop. To access the backend, you must use the github pages site, or host the website locally with the live server Visual Studio Code extension. Once you reach the website, you will be greeted by our home page. From there you are free to search for any product you want, keep in mind most of our database is centered around self care items. You can sort your results with the drop down menu next to the search bar. Once you’ve found an interesting item you can click on it to open the popup card, from there you can read about the item and see reviews other users have left, or leave one yourself. You can also make an account and save an item to your shopping list to save it for later viewing.
 
 
