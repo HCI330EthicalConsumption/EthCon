@@ -226,6 +226,8 @@ let numberPerPage = 5;
 let numberOfPages = 0;
 let currentPage = 1;
 let productList = null;
+let curr_search_page = 1;
+let reached_end = false;
 
 const get = async (url) => {
     console.log(url);
@@ -258,7 +260,7 @@ const search_gg = async (keywords, sortby, pagenum) => {
 
     const resp = await get(url);
     let data = await resp.json();
-    console.log(data);
+    console.log(data);  
     return data.products;
 }
 
@@ -268,11 +270,28 @@ const search_products = async () => {
     sortby = document.getElementById("sortby").value;
     console.log(sortby);
     search_terms = document.getElementById("search-terms").value;
-    data = await search_gg(search_terms, sortby, 1);
-    numberOfPages = Math.ceil(data.length / numberPerPage);
-    productList = data;
-    generatePaginationHtml(numberOfPages, 1);
-    return data;
+    data = await search_gg(search_terms, sortby, curr_search_page);
+    curr_search_page += 1;
+    console.log("curr_search_page "+ curr_search_page)
+    if (data) {
+        if (productList) {
+            if (data[data.length-1] != productList[productList-1]) {
+                console.log(productList);
+                console.log(data);
+                productList = productList.concat(data);
+                console.log(productList);
+            }else {
+                reached_end = true;
+                console.log("we done");
+            }
+
+        } else{
+            productList = data;
+        }
+    }
+    numberOfPages = Math.floor(productList.length / numberPerPage);
+    generatePaginationHtml(numberOfPages, currentPage);
+    return productList;
 };
 
 // Used as keypress event listener, determines whether the enter key was pressed in event
@@ -287,10 +306,27 @@ const search_on_enter = (event) => {
     return false;
 }
 
-function generatePaginationHtml(totalCount, currentPage) {
+const generatePaginationHtml = async (totalCount, currentPage) =>{
+    console.log(currentPage);
     let template = `
     <div class="pwrap">`;
-    for (let i = 1; i <= totalCount; i++) {
+    let i = currentPage - 2 <= 0 ? 1 : currentPage - 2;
+    let stop_page = i + 4;
+    if (numberOfPages <= stop_page) {
+        if (productList.length > 0 && !reached_end) {
+            await search_products();
+        } else if (productList.length == 0) {
+            document.querySelector('#navigation').innerHTML = "";
+            document.querySelector('#bottom-navigation').innerHTML = "";
+            return;
+        } else {
+            stop_page = Math.ceil(productList.length / numberPerPage)
+            i = stop_page - 4 <= 0 ? 0 : stop_page - 4;
+            console.log("in the reached end one")
+        }
+    }
+
+    for (; i <= stop_page; i++) {
         template += `
         <div class = "pagination"><a "`;
         if (currentPage == i) {
@@ -302,12 +338,13 @@ function generatePaginationHtml(totalCount, currentPage) {
         </div>`;
     document.querySelector('#navigation').innerHTML = template;
     document.querySelector('#bottom-navigation').innerHTML = template;
-
 };
 
 function loadPage(i) {
     currentPage = i;
+    console.log(productList);
     load_results(productList);
+    generatePaginationHtml(numberOfPages, currentPage);
 }
 
 
@@ -321,7 +358,9 @@ const load_results = (products) => {
     let begin = ((currentPage - 1) * numberPerPage);
     let end = begin + numberPerPage;
     let p = products.slice(begin, end);
+    console.log("load_results called");
     document.querySelector('#products').innerHTML = '';
+    console.log("should have reset the product cards");
     for (product of p) {
         const template = `<section class="product-card" id="${product.id}" product-url="${product.url}">
           <div class="left">
@@ -479,6 +518,11 @@ const search_and_load = () => {
         return false;
     }
     document.getElementById("results").innerHTML = "Searching...";
+    numberOfPages = 0;
+    currentPage = 1;
+    productList = null;
+    curr_search_page = 1;
+    reached_end = false;
     search_products()
         .then((products) => {
             load_results(products);
