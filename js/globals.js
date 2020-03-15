@@ -227,6 +227,7 @@ let numberOfPages = 0;
 let currentPage = 1;
 let productList = null;
 let curr_search_page = 1;
+let reached_end = false;
 
 const get = async (url) => {
     console.log(url);
@@ -272,16 +273,21 @@ const search_products = async () => {
     data = await search_gg(search_terms, sortby, curr_search_page);
     curr_search_page += 1;
     console.log("curr_search_page "+ curr_search_page)
-    if (productList) {
-        if (data[data.length-1] != productList[productList-1]) {
-            console.log(productList);
-            console.log(data);
-            productList = productList.concat(data);
-            console.log(productList);
-        }
+    if (data) {
+        if (productList) {
+            if (data[data.length-1] != productList[productList-1]) {
+                console.log(productList);
+                console.log(data);
+                productList = productList.concat(data);
+                console.log(productList);
+            }else {
+                reached_end = true;
+                console.log("we done");
+            }
 
-    } else{
-        productList = data;
+        } else{
+            productList = data;
+        }
     }
     numberOfPages = Math.floor(productList.length / numberPerPage);
     generatePaginationHtml(numberOfPages, currentPage);
@@ -307,7 +313,17 @@ const generatePaginationHtml = async (totalCount, currentPage) =>{
     let i = currentPage - 2 <= 0 ? 1 : currentPage - 2;
     let stop_page = i + 4;
     if (numberOfPages <= stop_page) {
-        await search_products();
+        if (productList.length > 0 && !reached_end) {
+            await search_products();
+        } else if (productList.length == 0) {
+            document.querySelector('#navigation').innerHTML = "";
+            document.querySelector('#bottom-navigation').innerHTML = "";
+            return;
+        } else {
+            stop_page = Math.ceil(productList.length / numberPerPage)
+            i = stop_page - 4 <= 0 ? 0 : stop_page - 4;
+            console.log("in the reached end one")
+        }
     }
 
     for (; i <= stop_page; i++) {
@@ -342,7 +358,9 @@ const load_results = (products) => {
     let begin = ((currentPage - 1) * numberPerPage);
     let end = begin + numberPerPage;
     let p = products.slice(begin, end);
+    console.log("load_results called");
     document.querySelector('#products').innerHTML = '';
+    console.log("should have reset the product cards");
     for (product of p) {
         const template = `<section class="product-card" id="${product.id}" product-url="${product.url}">
           <div class="left">
@@ -500,6 +518,11 @@ const search_and_load = () => {
         return false;
     }
     document.getElementById("results").innerHTML = "Searching...";
+    numberOfPages = 0;
+    currentPage = 1;
+    productList = null;
+    curr_search_page = 1;
+    reached_end = false;
     search_products()
         .then((products) => {
             load_results(products);
