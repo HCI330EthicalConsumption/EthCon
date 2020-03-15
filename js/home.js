@@ -1,4 +1,5 @@
 document.querySelector("#home-search-button").onclick = open_search_page;
+document.querySelector("#home-button").onclick = open_search_page;
 
 document.querySelector("#login-button").onclick = async (event) => {
     let username = document.querySelector("#login-username").value;

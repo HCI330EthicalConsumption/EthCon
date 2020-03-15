@@ -168,7 +168,7 @@ document.querySelector('#star5').onclick = async () => {
 
 star_elements.click(changeRatingStars);
 
-document.querySelector("#home-button").onclick = open_home_page;
+document.querySelector("#home-button").onclick = open_search_page;
 
 document.querySelector('#yes').onclick = async () => {
     recommend = document.querySelector('.recommend').value = 'Yes';
