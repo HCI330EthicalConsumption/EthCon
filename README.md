@@ -1,6 +1,6 @@
 # Final Report (P8) 
 Adviti Atluri, Jackson Schuster, Jenni Hutson, Andre Norton
-
+### Note the data source used for this project has been taken down and the demo no longer works
 ## Problem & Related Work (P1)
 The core of our problem is that there is a lack of transparency regarding company ethics and subsequent environmental impacts of their products. We believe this issue to be important as we tackle climate change and raise consumer consciousness. There are currently some existing solutions that have some information about company ethics, but they are clunky and hard to use, and do not offer a shopping list feature. Our information and ratings come from several environmental and rating groups, and we take that information and make it more easily navigable and digestible.
 
